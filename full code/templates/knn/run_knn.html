@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k-NN Results</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <!-- Link to the styles.css file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
+
+    <script>
+        let currentFrame = 0;
+        const frameFiles = {{ frame_files | tojson }};  // Pass the list of frame files from Flask to JavaScript
+        const totalFrames = frameFiles.length;  // Use the length of the frame files list
+        let animationInterval;
+        let animationSpeed = 1000;  // Default speed in milliseconds
+
+        function showFrame() {
+            const imgElement = document.getElementById("animation");
+            imgElement.src = `{{ url_for('static', filename='') }}${frameFiles[currentFrame]}`;  // Correct URL format
+        }
+
+        function startAnimation() {
+            if (!animationInterval) {
+                animationInterval = setInterval(() => {
+                    currentFrame = (currentFrame + 1) % totalFrames;
+                    showFrame();
+                }, animationSpeed);
+            }
+        }
+
+        function stopAnimation() {
+            clearInterval(animationInterval);
+            animationInterval = null;
+        }
+
+        function stepForward() {
+            currentFrame = (currentFrame + 1) % totalFrames;
+            showFrame();
+        }
+
+        function stepBackward() {
+            currentFrame = (currentFrame - 1 + totalFrames) % totalFrames;
+            showFrame();
+        }
+
+        function endAnimation() {
+            currentFrame = totalFrames - 1;  // Set to the last frame
+            showFrame();
+        }
+
+        // Adjust the animation speed based on the slider value
+        function adjustSpeed(value) {
+            animationSpeed = 2000 - value;  // Invert the value so a higher slider value is slower
+            document.getElementById("speedValue").textContent = value + ' ms';  // Update the displayed speed value
+            if (animationInterval) {
+                stopAnimation();
+                startAnimation();
+            }
+        }
+
+        window.onload = function() {
+            showFrame();  // Display the first frame on load
+            document.getElementById("speedValue").textContent = animationSpeed + ' ms';  // Display default speed on load
+        };
+    </script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776; <!-- Hamburger icon (three bars) -->
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/dc">Decision Trees</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <div class="content-container">
+        <h1><i>k</i>-Nearest Neighbours Results</h1>
+        <img class="knn_animation" id="animation" src="" alt="k-NN Animation"> <!-- The initial image will be shown dynamically -->
+        <br>
+        <div class="button-container">
+            <button onclick="startAnimation()">Start</button>
+            <button onclick="stopAnimation()">Pause</button>
+            <button onclick="stepForward()">Step Forward</button>
+            <button onclick="stepBackward()">Step Backward</button>
+            <button onclick="endAnimation()">End</button>
+        </div>
+        
+        <!-- Add a button to select different k values -->
+        <div class="button-container">
+            <button onclick="window.location.href='/select_k'">Explore Different k Values</button>
+        </div>
+
+        <!-- Speed control slider with display -->
+        <div class="speed-control">
+            <label for="speedRange">Animation Speed:</label>
+            <input type="range" id="speedRange" min="500" max="1500" value="1000" step="100" onchange="adjustSpeed(this.value)">
+            <span id="speedValue">1000 ms</span> <!-- Display for the speed value -->
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // JavaScript to handle the hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>
