@@ -1,0 +1,413 @@
+/* General styles */
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    margin: 0;
+    background-color: #2D2D2D;
+    color: white;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none; /* Remove underline for links */
+    color: #e8e8e8;
+}
+
+a:hover, a:focus {
+    color: #b3bdff; /* Hover effect: Light purple */
+}
+
+/* Navigation bar styles */
+.navbar {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 98%; /* Make sure the navbar spans the full width */
+    top: 0; /* Align the navbar to the top of the page */
+    z-index: 10;
+    background-color: #1B1B1B; /* Navbar background color */
+    border-bottom: 2px solid #FFA500; /* Orange border for navbar */
+}
+
+.logo {
+    font-family: 'Signika Negative', sans-serif;
+    font-size: 25px;
+    color: white;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+    font-size: 15px;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+}
+
+.nav-links a:hover, a:focus {
+    color: #b3bdff; /* Hover color for links */
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 90vh; /* Full viewport height */
+    background: url('img/ml.jpg') no-repeat center center;
+    background-size: cover; /* Ensures the image covers the whole section */
+    color: white; /* Text color */
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    text-align: left;
+    padding-top: 70px;
+}
+
+.hero-section h1 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.hero-buttons .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    margin: 0 10px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 17px;
+}
+
+.hero-content {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5); /* Adds a semi-transparent background to text */
+    border-radius: 10px; /* Rounds the corners */
+}
+
+.btn-primary {
+    background-color: #FFA500; /* Orange */
+}
+
+.btn-primary:hover {
+    background-color: #fabd4d; /* Lighter orange */
+}
+
+.btn-secondary {
+    background-color: #6A0DAD; /* Purple */
+}
+
+.btn-secondary:hover {
+    background-color: #a148e0; /* Darker purple */
+}
+
+/* Overview Section */
+.overview {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #292828;
+    font-size: 16px;
+}
+
+/* Card Effect */
+.algorithm-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 35px;
+}
+
+.card {
+    background-color: #6A0DAD;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    text-decoration: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    margin: 20px;
+}
+
+.card img {
+    width: 300px; /* Adjust size as needed */
+    height: 300px;
+    margin-bottom: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* Center the image */
+}
+
+.card h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+}
+
+.card p {
+    font-size: 16px;
+    font-family: 'Signika Negative', sans-serif;
+    margin: 0;
+    opacity: 0.8; /* Slightly transparent text */
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
+}
+
+/* Footer */
+.footer {
+    background-color: #1B1B1B;
+    font-size: 16px;
+    padding: 20px;
+    text-align: center;
+    color: #FFA500; /* Orange */
+    margin-top: 40px;
+}
+
+/* Dropdown Menu Styles */
+.dropdown .dropbtn {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: white;
+    text-align: left;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(51, 51, 51, 0.7); /* Slightly transparent black */
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(87, 87, 87, 0.7); /* Slightly transparent hover effect */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Hamburger Menu for Mobile */
+.menu-toggle {
+    display: none;
+}
+
+/* Media Query for Mobile (Small Screens) */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        background-color: #1B1B1B; /* Dropdown background */
+        position: absolute;
+        top: 60px; /* Adjust according to navbar height */
+        left: 0;
+        width: 100%;
+        display: none; /* Initially hide the dropdown */
+    }
+
+    .nav-links li {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links.show {
+        display: flex; /* Show the menu when toggled */
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar .menu-toggle {
+        display: block; /* Show the hamburger menu on mobile */
+        cursor: pointer;
+        font-size: 24px;
+        color: #FFA500;
+        margin-left: auto;
+        padding-right: 20px;
+    }
+
+    /* Adjust the hero section for mobile */
+    .hero-section {
+        height: auto; /* Auto height for content on smaller screens */
+        text-align: center; /* Center align text */
+    }
+
+    .hero-section h1 {
+        font-size: 22px; /* Smaller font size for mobile */
+    }
+}
+
+/* About Section */
+.about-section {
+    padding: 20px;
+    margin-top: 20px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.about-section h1, .about-section h2, .about-section h3 {
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+.about-section h1 {
+    font-size: 25px;
+}
+
+.about-section h2 {
+    font-size: 20px;
+}
+
+.about-section p, .about-section ul {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Guides Section */
+.guides-section {
+    padding: 20px;
+    background-color: #292828;
+}
+
+.guides-section h1 {
+    margin-top: 80px;
+    font-size: 25px;
+}
+
+.guide-card {
+    background-color: #424242;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.guide-card h2 {
+    font-size: 1.5em;
+    margin-top: 0;
+}
+
+.guides-section .btn {
+    background-color: #6A0DAD;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* Explore Section */
+.explore-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.explore-section h1 {
+    margin-top: 80px;
+}
+
+.explore-section .example-card {
+    background-color: white;
+    width: 300px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 15px;
+    color: black;
+}
+
+.explore-section .example-card img {
+    width: 100%; /* Adjust to fit card width */
+    height: 300px;
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+.explore-section .example-card h2 {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.explore-section .btn {
+    background-color: #6A0DAD;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* Theory Section */
+.theory-section {
+    padding: 20px;
+    background-color: #292828;
+    margin-top: 20px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.theory-section h1 {
+    margin-top: 50px;
+}
+
+.theory-section h2 {
+    font-size: 22px;
+    margin-top: 40px;
+    color: white;
+}
+
+.theory-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #e8e8e8;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.theory-section img {
+    width: 90%;
+    height: auto;
+    margin: 20px auto 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    display: block;
+}
+
+
+

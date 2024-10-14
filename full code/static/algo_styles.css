@@ -1,0 +1,156 @@
+/* General body style */
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    background-color: #2D2D2D;
+    color: #333;
+    margin: 0; /* Remove any default margin */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Content container style to prevent navbar from being affected */
+.content-container {
+    padding: 80px 20px; /* Adjust the padding values as needed */
+}
+
+/* Link styles */
+a {                       
+    text-decoration: none; /* Remove the underline for URLs */
+    color: white;
+}
+
+a:hover, a:focus { /* Change link color on hover */
+    color: #b3bdff;
+}
+
+.navbar {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 98%; /* Make sure the navbar spans the full width */
+    top: 0; /* Align the navbar to the top of the page */
+    z-index: 10;
+    background-color: #1B1B1B; /* Add a background color */
+    border-bottom: 2px solid #FFA500; /* Optional: Add a border to differentiate it */
+}
+
+/* Heading style */
+h1 {
+    color: black;
+    background-color: #FFA500; /* Orange */
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+/* Form styling */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto; /* Center the form */
+    text-align: center;
+}
+
+/* Label styling */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Input fields styling */
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensures padding does not increase width */
+}
+
+/* Buttons container */
+.button-container {
+    display: flex; /* Use flexbox to place buttons side by side */
+    justify-content: space-between; /* Distribute space between buttons */
+}
+
+/* Button styling */
+button {
+    flex: 1; /* Make both buttons take equal width */
+    padding: 12px;
+    margin-left:20px;
+    background-color: #6A0DAD; /* Lighter Purple */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Adds a smooth transition effect */
+}
+
+/* Hover effect for the buttons */
+button:hover {
+    background-color: #7385fa; /* Darker shade of blue on hover */
+}
+
+/* Centered image styling */
+.centered-image {
+    max-width: 80%; /* Makes the image responsive to the screen size */
+    max-height: 80vh; /* Ensure it doesn't overflow the viewport height */
+    margin: 0 auto; /* Center the image */
+    display: block; /* Make the image a block element for margin auto to work */
+    border: 2px solid #ccc; /* Optional: Add a border around the image */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+#animation {
+    width: 600px;
+    height: auto;
+    border-radius: 8px;
+    display: flex;
+    margin: 0 auto; /* Center the image */
+    display: block;
+}
+
+.speed-control {
+    color: white;
+    margin-top: 10px;
+}
+
+/* Styling the range slider track */
+.speed-control input[type="range"] {
+    -webkit-appearance: none;  /* Remove default browser styles */
+    appearance: none;
+    width: 300px;
+    height: 8px;   /* Track height */
+    background: #ddd; /* Track background color */
+    border-radius: 5px;
+    outline: none;
+}
+
+.speed-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: orange;  /* Orange color for the thumb */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.off-grid-control {
+    margin-top: 20px; /* Add some space above the checkbox */
+    font-size: 1.2em; /* Increase font size */
+}
+
+.off-grid-control input {
+    margin-right: 10px; /* Space between checkbox and label */
+}
