@@ -56,6 +56,7 @@
         <p>
             <i>k</i>-NN is a <b>non-parametric algorithm</b>, which means it does not make any assumption on underlying data. It is also called a <b>lazy learner algorithm</b> because it does not learn from the training set immediately; instead, it stores the dataset and at the time of classification, it performs an action on the dataset.
         </p>
+        
         <h3>Example: Classifying Cats and Dogs</h3>
         <p>In this example, we use <i>k</i>-NN to classify whether an unknown animal is a cat or a dog based on two features: <b>fur length</b> and <b>weight</b>.</p>
         <ul>
@@ -66,6 +67,93 @@
         
         <!-- Insert the image here -->
         <img src="{{ url_for('static', filename='img/knn_intro.jpg') }}" alt="k-NN Classifying Example">
+        
+        <h3>How does <i>k</i>-NN work?</h3>
+        <ul>
+            <li>Step 1: Selecting the optimal value of <i>k</i> which <i>k</i> represent the number of nearest neighbours that needs to be consider while making prediction.</li>
+            <li>Step 2: Calculating distance to measure the similarity between target and training data points.</li>
+            <li>Step 3: Finding nearest neighbours which the <i>k</i> data points with the smallest distances to the target point are the nearest neighbors</li>
+            <li>Step 4: Perform majority voting where the class with the most occurrences among the neighbors becomes the predicted class for the target data point.</li>
+        </ul>
+        
+        <h3>4 types of computing <i>k</i>-NN distance metrics</h3>
+        <p>The key to the <i>k</i>-NN algorithm is determining the distance between the query point and the other data points. Determining distance metrics enables decision boundaries. These boundaries create different data point regions. There are different methods used to calculate distance:</p>
+        <ul>
+            <li>Euclidean distance is the most common distance measure, which measures a straight line between the query point and the other point being measured.</li>
+            
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                    <mi>d</mi>
+                    <mo>(</mo>
+                    <mi>p</mi>
+                    <mo>,</mo>
+                    <mi>q</mi>
+                    <mo>)</mo>
+                    <mo>=</mo>
+                    <msqrt>
+                        <mrow>
+                            <mo>(</mo>
+                            <msub><mi>x</mi><mn>2</mn></msub>
+                            <mo>-</mo>
+                            <msub><mi>x</mi><mn>1</mn></msub>
+                            <mo>)</mo>
+                            <msup><mo>+</mo><mo>(</mo></msup>
+                            <msub><mi>y</mi><mn>2</mn></msub>
+                            <mo>-</mo>
+                            <msub><mi>y</mi><mn>1</mn></msub>
+                            <mo>)</mo>
+                            <msup><mn>2</mn></msup>
+                        </mrow>
+                    </msqrt>
+                </mrow>
+            </math>
+            
+            <ul>
+                <li>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <mrow>
+                            <mi>d</mi>
+                            <mo>(</mo>
+                            <mi>p</mi>
+                            <mo>,</mo>
+                            <mi>q</mi>
+                            <mo>)</mo>
+                        </mrow>
+                    </math>
+                    represents the Euclidean Distance between the two points p and q.
+                </li>
+                
+                <li>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <mrow>
+                            <mo>(</mo>
+                            <msub><mi>x</mi><mn>2</mn></msub>
+                            <mo>-</mo>
+                            <msub><mi>x</mi><mn>1</mn></msub>
+                            <mo>)</mo> 
+                        </mrow>
+                    </math>
+                    represents the difference between the x-coordinates of the two points.
+                </li>
+                
+                <li>
+                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                        <mrow>
+                            <mo>(</mo>
+                            <msub><mi>y</mi><mn>2</mn></msub>
+                            <mo>-</mo>
+                            <msub><mi>y</mi><mn>1</mn></msub>
+                            <mo>)</mo>
+                        </mrow>
+                    </math>
+                    represents the difference between the y-coordinates of the two points.
+                </li>
+            </ul>
+    
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
     
         <h2>Decision Trees</h2>
         <p>
