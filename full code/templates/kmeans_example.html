@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k-Means Clustering Example - Machine Learning Made Visual</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Including Chart.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="example-header">
+        <h1>k-Means Clustering Algorithm</h1>
+        <p>Visualize how k-means clustering groups similar data points together in a dataset.</p>
+    </header>
+
+    <!-- Interactive Visualization Section -->
+    <section class="visualization">
+        <h2>Interactive Visualization</h2>
+        <!-- Canvas for the Chart.js visualization -->
+        <canvas id="kmeansChart"></canvas>
+
+        <!-- Controls for adjusting parameters -->
+        <div class="controls">
+            <label for="clusters">Number of Clusters (k):</label>
+            <input type="range" id="clusters" name="clusters" min="1" max="10" value="3">
+            <span id="clusters-display">3</span>
+        </div>
+    </section>
+
+    <!-- Explanation Section -->
+    <section class="explanation">
+        <h2>How k-Means Clustering Works</h2>
+        <p>k-Means is an unsupervised learning algorithm that is used for clustering similar data points together. The algorithm tries to minimize the distance between points in a cluster and the cluster center.</p>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>© 2024 Machine Learning Made Visual. All rights reserved. | <a href="/guides">Guides</a></p>
+    </footer>
+
+    <!-- JavaScript for interactive elements -->
+    <script>
+        // Initialize the Chart.js scatter plot
+        const ctx = document.getElementById('kmeansChart').getContext('2d');
+        const kmeansChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Data Points',
+                    data: [{x: 1, y: 2}, {x: 2, y: 3}, {x: 3, y: 1}],  // Example data points
+                    backgroundColor: 'rgb(255, 99, 132)'
+                }]
+            },
+            options: {
+                scales: {
+                    x: { beginAtZero: true },
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Update chart when cluster count changes
+        document.getElementById('clusters').addEventListener('input', function() {
+            document.getElementById('clusters-display').innerText = this.value;
+            // Placeholder for updating the visualization logic
+        });
+    </script>
+
+</body>
+</html>

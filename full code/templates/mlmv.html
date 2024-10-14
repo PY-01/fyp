@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLMV</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776; <!-- Hamburger icon (three bars) -->
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="#overview">Algorithms</a></li> <!-- Direct link to algorithm cards -->
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="hero-content">
+            <h1>Explore, Learn, and Visualize Machine Learning Algorithms</h1>
+            <div class="hero-buttons">
+                <a href="/guides" class="btn btn-primary">Get Started</a>
+                <a href="/explore" class="btn btn-secondary">Explore</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overview Section -->
+    <section class="overview" id="overview">
+        <h2>Machine Learning Made Visual</h2>
+        <p>An intuitive educational tool that allows you to explore <i>k</i>-NN, Decision Trees, and <i>k</i>-Means Clustering through interactive visualizations.</p>
+        <div class="algorithm-cards" id="algorithm-cards"> <!-- Added ID to scroll to -->
+            <a href="/knn" class="card">
+                <img src="{{ url_for('static', filename='img/knn_card.jpg') }}" alt="k-NN Image">
+                <h3><i>k</i>-NN</h3>
+                <p>Explore how neighbors determine class!</p>
+            </a>
+            
+            <a href="/dc" class="card">
+                <img src="{{ url_for('static', filename='img/dc_card.jpg') }}" alt="Decision Trees Image">
+                <h3>Decision Trees</h3>
+                <p>Visualize decision-making paths!</p>
+            </a>
+            
+            <a href="/kmeans" class="card">
+                <img src="{{ url_for('static', filename='img/kmeans_card.jpg') }}" alt="k-Means Image">
+                <h3><i>k</i>-Means</h3>
+                <p>See how clustering works!</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // JavaScript to handle the hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

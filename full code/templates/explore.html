@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776; <!-- Hamburger icon (three bars) -->
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/dc">Decision Trees</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Examples Grid Section -->
+    <section class="explore-section">
+        <h1>Explore Pre-Built Machine Learning Examples</h1>
+        <p>Quickly dive into interactive examples to understand how different machine learning algorithms work. Adjust parameters, visualize outcomes, and learn through hands-on experience!</p>
+    
+        <div class="example-card">
+            <img src="{{ url_for('static', filename='img/knn_example.jpg') }}" alt="k-NN Example">
+            <h2>k-Nearest Neighbors (k-NN)</h2>
+            <p>Understand how the k-NN algorithm classifies new data points based on its neighbors.</p>
+            <a href="/knn-example" class="btn btn-primary">Try It</a>
+        </div>
+            
+        <div class="example-card">
+            <img src="{{ url_for('static', filename='img/decision_tree_example.jpg') }}" alt="Decision Tree Example">
+            <h2>Decision Trees</h2>
+            <p>Explore how decision trees are constructed and how they make decisions based on input features.</p>
+            <a href="/decision-tree-example" class="btn btn-primary">Try It</a>
+        </div>
+            
+        <div class="example-card">
+            <img src="{{ url_for('static', filename='img/kmeans_example.jpg') }}" alt="k-Means Clustering Example">
+            <h2>k-Means Clustering</h2>
+            <p>Visualize how k-means clustering groups similar data points together in a dataset.</p><br>
+            <a href="/kmeans-example" class="btn btn-primary">Try It</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // JavaScript to handle the hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

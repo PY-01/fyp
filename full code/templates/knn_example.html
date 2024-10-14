@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k-NN Example - Machine Learning Made Visual</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="example-header">
+        <h1>k-Nearest Neighbors (k-NN) Algorithm</h1>
+        <p>Explore how the k-NN algorithm classifies new data points based on the closest training examples.</p>
+    </header>
+
+    <!-- Interactive Visualization Section -->
+    <section class="visualization">
+        <h2>Interactive Visualization</h2>
+        <canvas id="knnChart"></canvas> <!-- Canvas for Chart.js -->
+
+        <!-- Controls for adjusting parameters -->
+        <div class="controls">
+            <label for="k-value">Number of Neighbors (k):</label>
+            <input type="range" id="k-value" name="k-value" min="1" max="15" value="3">
+            <span id="k-value-display">3</span> <!-- Display current k-value -->
+        </div>
+    </section>
+
+    <!-- Explanation Section -->
+    <section class="explanation">
+        <h2>How k-NN Works</h2>
+        <p>The k-Nearest Neighbors (k-NN) algorithm classifies data points based on their proximity to existing labeled data points. Adjust the slider above to change the number of neighbors (k) and see how it affects the classification results.</p>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>© 2024 Machine Learning Made Visual. All rights reserved. | <a href="/guides">Guides</a></p>
+    </footer>
+
+    <!-- JavaScript for interactive elements -->
+    <script>
+        const ctx = document.getElementById('knnChart').getContext('2d');
+        const knnChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Training Data',
+                    data: [{x: 1, y: 2}, {x: 2, y: 3}, {x: 3, y: 1}],  // Example data points
+                    backgroundColor: 'rgb(75, 192, 192)'
+                }]
+            },
+            options: {
+                scales: {
+                    x: { beginAtZero: true },
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        document.getElementById('k-value').addEventListener('input', function() {
+            document.getElementById('k-value-display').innerText = this.value;
+            // Update chart logic here
+        });
+    </script>
+
+</body>
+</html>

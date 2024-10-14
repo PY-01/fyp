@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776; <!-- Hamburger icon (three bars) -->
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/dc">Decision Trees</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Theory Section -->
+    <section class="theory-section">
+        <h1>Theoretical Background of Machine Learning Algorithms</h1>
+        <p>
+            Machine Learning (ML) is a subset of artificial intelligence where algorithms are used to enable machines to learn from data and improve their performance without being explicitly programmed. 
+            This section provides insights into the core principles and mathematical concepts behind the algorithms featured in MLMV.
+        </p>
+    
+        <h2><i>k</i>-Nearest Neighbors (<i>k</i>-NN)</h2>
+        <p>
+            <i>k</i>-NN is a simple, yet powerful, algorithm used for <b>classification</b> and <b>regression</b> tasks. It makes predictions by comparing new data points to the '<i>k</i>' nearest points in the dataset. The class most frequent among the neighbors becomes the predicted class.
+        </p>
+        <p>
+            <i>k</i>-NN is a <b>non-parametric algorithm</b>, which means it does not make any assumption on underlying data. It is also called a <b>lazy learner algorithm</b> because it does not learn from the training set immediately; instead, it stores the dataset and at the time of classification, it performs an action on the dataset.
+        </p>
+        <h3>Example: Classifying Cats and Dogs</h3>
+        <p>In this example, we use <i>k</i>-NN to classify whether an unknown animal is a cat or a dog based on two features: <b>fur length</b> and <b>weight</b>.</p>
+        <ul>
+            <li><b>Cat icons</b> represent known cats.</li>
+            <li><b>Dog icons</b> represent known dogs.</li>
+            <li><b>Question mark icon</b> is the unknown animal that we want to classify.</li>
+        </ul>
+        
+        <!-- Insert the image here -->
+        <img src="{{ url_for('static', filename='img/knn_intro.jpg') }}" alt="k-NN Classifying Example">
+    
+        <h2>Decision Trees</h2>
+        <p>
+            Decision Trees are non-parametric supervised learning methods used for classification and regression. A tree-like structure is created where each node represents a feature, each branch a decision rule, and each leaf a class or value.
+        </p>
+    
+        <h2><i>k</i>-Means Clustering</h2>
+        <p>
+            <i>k</i>-Means is an unsupervised learning algorithm used for clustering tasks. It partitions a dataset into 'k' distinct, non-overlapping clusters by minimizing the variance within each cluster. This is achieved through an iterative process of assigning points to the nearest cluster centroid and recalculating the centroids.
+        </p>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

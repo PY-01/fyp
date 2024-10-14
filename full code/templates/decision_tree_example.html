@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Tree Example - Machine Learning Made Visual</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Including D3.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="example-header">
+        <h1>Decision Tree Algorithm</h1>
+        <p>Learn how decision trees make decisions based on input features.</p>
+    </header>
+
+    <!-- Interactive Visualization Section -->
+    <section class="visualization">
+        <h2>Interactive Visualization</h2>
+        <!-- Div for the D3.js visualization -->
+        <div id="decisionTreeVis"></div>
+
+        <!-- Controls for adjusting parameters -->
+        <div class="controls">
+            <label for="depth">Max Depth:</label>
+            <input type="range" id="depth" name="depth" min="1" max="10" value="3">
+            <span id="depth-display">3</span>
+        </div>
+    </section>
+
+    <!-- Explanation Section -->
+    <section class="explanation">
+        <h2>How Decision Trees Work</h2>
+        <p>A decision tree is a flowchart-like structure where each internal node represents a decision based on an attribute, each branch represents an outcome, and each leaf node represents a class label or decision.</p>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>© 2024 Machine Learning Made Visual. All rights reserved. | <a href="/guides">Guides</a></p>
+    </footer>
+
+    <!-- JavaScript for interactive elements -->
+    <script>
+        // Example D3 code for visualizing a decision tree
+        // Placeholder for D3 visualization logic
+        document.getElementById('depth').addEventListener('input', function() {
+            document.getElementById('depth-display').innerText = this.value;
+            // Placeholder for updating visualization
+            // Can be integrated with a Flask endpoint to get updated tree data
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776; <!-- Hamburger icon (three bars) -->
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/dc">Decision Trees</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <h1>About Machine Learning Made Visual (MLMV)</h1>
+        <p>Machine Learning Made Visual (MLMV) is an interactive platform designed to help users understand machine learning algorithms through visualization. Our goal is to make complex concepts more accessible and engaging by providing hands-on examples and intuitive guides.</p>
+        
+        <h2>Features</h2>
+        <ul>
+            <li><strong>Interactive Examples:</strong> Explore pre-built examples of k-Nearest Neighbors, Decision Trees, and k-Means Clustering.</li>
+            <li><strong>Visual Guides:</strong> Follow step-by-step guides to learn how to use and understand different machine learning algorithms.</li>
+            <li><strong>Customizable Parameters:</strong> Adjust parameters in real-time to see how they affect the outcomes of algorithms.</li>
+        </ul>
+        
+        <h2>The Team</h2>
+        <div>
+            <h3>Loo Pei Yin</h3>
+            <p><strong>Role:</strong> Developer, Designer, and Researcher</p>
+            <p>
+                I am Loo Pei Yin, a final year student in Mathematics Technology at Universiti Tun Hussein Onn Malaysia. This website was created as part of my final year project, titled 'Machine Learning Made Visual' (MLMV). I was responsible for all aspects of the project, including concept design, development, coding, and documentation. My goal was to create an interactive and educational tool to help users understand machine learning algorithms through visualizations.
+            </p>
+        </div>
+
+        <h2>Contact Us</h2>
+        <p>If you have any questions, feedback, or need support, please reach out to us at pyin702@gmail.com.</p>
+
+        <h2>Acknowledgments</h2>
+        <p>I would like to express my deepest gratitude to my project supervisor, Mr. Lee Siaw Chong, for his invaluable guidance, support, and encouragement throughout the development of this project.</p>
+        <p>My sincere thanks also go to the Faculty of Applied Sciences and Technology at Universiti Tun Hussein Onn Malaysia for providing the resources and support necessary for the successful completion of this project.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // JavaScript to handle the hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>
