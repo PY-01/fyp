@@ -146,11 +146,16 @@ button:hover {
     transition: background 0.2s ease;
 }
 
-.off-grid-control {
-    margin-top: 20px; /* Add some space above the checkbox */
-    font-size: 1.2em; /* Increase font size */
+/* Centering styles */
+.video-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Stack children vertically */
+    height: 80vh; /* Adjust height as needed */
 }
 
-.off-grid-control input {
-    margin-right: 10px; /* Space between checkbox and label */
+#knnVideo {
+    border-radius: 8px; /* Apply border-radius to the video */
 }
+
