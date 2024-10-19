@@ -14,63 +14,6 @@
     <!-- Link to the styles.css file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
-
-    <script>
-        let currentFrame = 0;
-        const frameFiles = {{ frame_files | tojson }};  // Pass the list of frame files from Flask to JavaScript
-        const totalFrames = frameFiles.length;  // Use the length of the frame files list
-        let animationInterval;
-        let animationSpeed = 1000;  // Default speed in milliseconds
-
-        function showFrame() {
-            const imgElement = document.getElementById("animation");
-            imgElement.src = `{{ url_for('static', filename='') }}${frameFiles[currentFrame]}`;  // Correct URL format
-        }
-
-        function startAnimation() {
-            if (!animationInterval) {
-                animationInterval = setInterval(() => {
-                    currentFrame = (currentFrame + 1) % totalFrames;
-                    showFrame();
-                }, animationSpeed);
-            }
-        }
-
-        function stopAnimation() {
-            clearInterval(animationInterval);
-            animationInterval = null;
-        }
-
-        function stepForward() {
-            currentFrame = (currentFrame + 1) % totalFrames;
-            showFrame();
-        }
-
-        function stepBackward() {
-            currentFrame = (currentFrame - 1 + totalFrames) % totalFrames;
-            showFrame();
-        }
-
-        function endAnimation() {
-            currentFrame = totalFrames - 1;  // Set to the last frame
-            showFrame();
-        }
-
-        // Adjust the animation speed based on the slider value
-        function adjustSpeed(value) {
-            animationSpeed = 2000 - value;  // Invert the value so a higher slider value is slower
-            document.getElementById("speedValue").textContent = value + ' ms';  // Update the displayed speed value
-            if (animationInterval) {
-                stopAnimation();
-                startAnimation();
-            }
-        }
-
-        window.onload = function() {
-            showFrame();  // Display the first frame on load
-            document.getElementById("speedValue").textContent = animationSpeed + ' ms';  // Display default speed on load
-        };
-    </script>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -79,12 +22,11 @@
         
         <!-- Hamburger Icon for Small Screens -->
         <div class="menu-toggle" id="mobile-menu">
-            &#9776; <!-- Hamburger icon (three bars) -->
+            &#9776;
         </div>
         
         <ul class="nav-links" id="nav-links">
             <li><a href="/">Home</a></li>
-            
             <li class="dropdown">
                 <a href="#" class="dropbtn">Algorithms</a>
                 <div class="dropdown-content">
@@ -93,35 +35,45 @@
                     <a href="/kmeans">k-Means</a>
                 </div>
             </li>
-            
             <li><a href="/explore">Pre-Built Examples</a></li>
             <li><a href="/theory">Theory</a></li>
             <li><a href="/guides">Guides</a></li>
             <li><a href="/about">About</a></li>
         </ul>
     </nav>
+    
+    <!-- Content Container -->
     <div class="content-container">
         <h1><i>k</i>-Nearest Neighbours Results</h1>
-        <img class="knn_animation" id="animation" src="" alt="k-NN Animation"> <!-- The initial image will be shown dynamically -->
-        <br>
-        <div class="button-container">
-            <button onclick="startAnimation()">Start</button>
-            <button onclick="stopAnimation()">Pause</button>
-            <button onclick="stepForward()">Step Forward</button>
-            <button onclick="stepBackward()">Step Backward</button>
-            <button onclick="endAnimation()">End</button>
+        
+        <!-- Video of k-NN Animation -->
+        <div class="video-container">
+            <!-- Video of k-NN Animation -->
+            <video id="knnVideo" width="600" controls>
+                <source src="{{ video_path }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
         
-        <!-- Add a button to select different k values -->
+        <!-- Buttons to control the video -->
         <div class="button-container">
-            <button onclick="window.location.href='/select_k'">Explore Different k Values</button>
+            <button onclick="document.getElementById('knnVideo').play()">Start</button>
+            <button onclick="document.getElementById('knnVideo').pause()">Pause</button>
+            <button onclick="document.getElementById('knnVideo').currentTime += 1">Step Forward</button>
+            <button onclick="document.getElementById('knnVideo').currentTime -= 1">Step Backward</button>
+            <button onclick="document.getElementById('knnVideo').currentTime = document.getElementById('knnVideo').duration; document.getElementById('knnVideo').pause()">End</button>
+        </div>
+        
+        <!-- Speed control slider -->
+        <div class="speed-control">
+            <label for="speedRange">Playback Speed:</label>
+            <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1" onchange="adjustSpeed(this.value)">
+            <span id="speedValue">1.0x</span>
         </div>
 
-        <!-- Speed control slider with display -->
-        <div class="speed-control">
-            <label for="speedRange">Animation Speed:</label>
-            <input type="range" id="speedRange" min="500" max="1500" value="1000" step="100" onchange="adjustSpeed(this.value)">
-            <span id="speedValue">1000 ms</span> <!-- Display for the speed value -->
+        <!-- Button to explore different k values -->
+        <div class="button-container">
+            <button onclick="window.location.href='/select_k'">Explore Different k Values</button>
         </div>
     </div>
     
@@ -134,10 +86,17 @@
         // JavaScript to handle the hamburger menu toggle
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('nav-links');
-
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('show');
         });
+
+        // Video control functions
+        const video = document.getElementById("knnVideo");
+
+        function adjustSpeed(value) {
+            video.playbackRate = parseFloat(value); // Set playback speed
+            document.getElementById("speedValue").textContent = value + 'x'; // Update displayed speed value
+        }
     </script>
 </body>
 </html>
