@@ -37,15 +37,11 @@ def about():
 # Example routes
 @app.route('/knn-example')
 def knn_example():
-    return render_template('knn_example.html')  # Ensure this template exists
-
-@app.route('/decision-tree-example')
-def decision_tree_example():
-    return render_template('decision_tree_example.html')  # Ensure this template exists
+    return render_template('knn_example.html')
 
 @app.route('/kmeans-example')
 def kmeans_example():
-    return render_template('kmeans_example.html')  # Ensure this template exists
+    return render_template('kmeans_example.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
