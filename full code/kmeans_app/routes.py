@@ -1,70 +1,46 @@
-from flask import request, render_template, redirect, url_for, session
-from . import bp  # Import the blueprint from __init__.py
-from .kmeans import perform_kmeans, fig_to_base64  # Import functions from kmeans.py
-import numpy as np
+from flask import Blueprint, render_template, request, redirect, url_for, session
+from .kmeans import perform_kmeans
+
+bp = Blueprint('kmeans', __name__, template_folder='../templates/kmeans')
 
 @bp.route('/', methods=['GET', 'POST'])
-def kmeans_home():
+def index():
+    # First page: Takes x and y data input
     if request.method == 'POST':
-        # Save user input data to session
         x = request.form.get('x_data')
         y = request.form.get('y_data')
-        
+
         if not x or not y:
-            return redirect(url_for('kmeans.kmeans_home'))  # Redirect if data is missing
+            return redirect(url_for('kmeans.index'))
 
         try:
             session['x'] = list(map(float, x.split(',')))
             session['y'] = list(map(float, y.split(',')))
         except ValueError:
-            return redirect(url_for('kmeans.kmeans_home'))  # Redirect if data conversion fails
-        
-        return redirect(url_for('kmeans.input_centroids'))
-
-    # Render the template 'kmeans.html'
-    return render_template('kmeans/kmeans.html')
-
-@bp.route('/input_centroids', methods=['GET', 'POST'])
-def input_centroids():
-    if request.method == 'POST':
-        # Save the number of clusters (k) to the session
-        k_value = request.form.get('k_value')
-        cx = request.form.get('cx')
-        cy = request.form.get('cy')
-
-        if not k_value or not cx or not cy:
-            return redirect(url_for('kmeans.input_centroids'))  # Redirect if any input is missing
-
-        try:
-            k = int(k_value)
-            session['k'] = k
-            session['cx'] = list(map(float, cx.split(',')))
-            session['cy'] = list(map(float, cy.split(',')))
-        except ValueError:
-            return redirect(url_for('kmeans.input_centroids'))  # Redirect if conversion fails
-
-        if len(session['cx']) != k or len(session['cy']) != k:
-            return redirect(url_for('kmeans.input_centroids'))  # Redirect if centroid counts don't match k
+            return redirect(url_for('kmeans.index'))
 
         return redirect(url_for('kmeans.run_kmeans'))
 
-    return render_template('kmeans/input_centroids.html')
+    return render_template('kmeans.html')
 
-@bp.route('/run_kmeans')
+@bp.route('/run_kmeans', methods=['GET', 'POST'])
 def run_kmeans():
-    x = session.get('x')
-    y = session.get('y')
-    cx = session.get('cx')
-    cy = session.get('cy')
-    k = session.get('k')
+    # Second page: Takes k, cx, cy input and displays the result
+    if request.method == 'POST':
+        try:
+            x = session.get('x', [])
+            y = session.get('y', [])
+            k = int(request.form['k_value'])
+            cx = list(map(float, request.form['cx'].split(',')))
+            cy = list(map(float, request.form['cy'].split(',')))
 
-    if not x or not y or not cx or not cy or not k:
-        return redirect(url_for('kmeans.kmeans_home'))  # Redirect if any required data is missing
+            if len(cx) != k or len(cy) != k:
+                return render_template('run_kmeans.html', error="Number of centroids must match k")
 
-    try:
-        fig, ani = perform_kmeans(x, y, cx, cy, k)
-        img = fig_to_base64(fig)
-        return render_template('kmeans/run_kmeans.html', img=img)
-    except Exception as e:
-        print(f"Error: {e}")
-        return f"An error occurred while running K-means: {e}"
+            animation_html = perform_kmeans(x, y, cx, cy, k)
+            return render_template('run_kmeans.html', animation_html=animation_html)
+
+        except ValueError:
+            return render_template('run_kmeans.html', error="Invalid input. Please ensure data is numeric.")
+    
+    return render_template('run_kmeans.html')
