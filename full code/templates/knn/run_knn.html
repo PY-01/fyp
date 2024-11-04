@@ -47,34 +47,10 @@
         <h1><i>k</i>-Nearest Neighbours Results</h1>
         
         <!-- Video of k-NN Animation -->
-        <div class="video-container">
-            <!-- Video of k-NN Animation -->
-            <video id="knnVideo" width="600" controls>
-                <source src="{{ video_path }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+        <div class="animation-container">
+            {{ animation_html | safe }}
         </div>
         
-        <!-- Buttons to control the video -->
-        <div class="button-container">
-            <button onclick="document.getElementById('knnVideo').play()">Start</button>
-            <button onclick="document.getElementById('knnVideo').pause()">Pause</button>
-            <button onclick="document.getElementById('knnVideo').currentTime += 1">Step Forward</button>
-            <button onclick="document.getElementById('knnVideo').currentTime -= 1">Step Backward</button>
-            <button onclick="document.getElementById('knnVideo').currentTime = document.getElementById('knnVideo').duration; document.getElementById('knnVideo').pause()">End</button>
-        </div>
-        
-        <!-- Speed control slider -->
-        <div class="speed-control">
-            <label for="speedRange">Playback Speed:</label>
-            <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1" onchange="adjustSpeed(this.value)">
-            <span id="speedValue">1.0x</span>
-        </div>
-
-        <!-- Button to explore different k values -->
-        <div class="button-container">
-            <button onclick="window.location.href='/select_k'">Explore Different k Values</button>
-        </div>
     </div>
     
     <!-- Footer -->
@@ -89,14 +65,6 @@
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('show');
         });
-
-        // Video control functions
-        const video = document.getElementById("knnVideo");
-
-        function adjustSpeed(value) {
-            video.playbackRate = parseFloat(value); // Set playback speed
-            document.getElementById("speedValue").textContent = value + 'x'; // Update displayed speed value
-        }
     </script>
 </body>
 </html>
