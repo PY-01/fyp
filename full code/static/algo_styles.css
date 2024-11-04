@@ -109,53 +109,73 @@ button:hover {
     border-radius: 8px; /* Optional: Add rounded corners */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
+    
+.animation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensures it takes up the full container width */
+    max-width: 90%; /* Restrict maximum width to fit inside the container */
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 10px;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+    
+.animation-container canvas, .animation-container img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 600px; /* Allow for a larger height */
+    object-fit: contain;
+}  
 
-#animation {
-    width: 600px;
-    height: auto;
+/* Main container for side-by-side form and results */
+.side-by-side-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 20px;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styling within side-by-side layout */
+.input-form {
+    flex: 1 1 300px; /s* Take up equal space, minimum width of 300px */
+    max-width: 400px;
+    background-color: #fff;
+    padding: 20px;
     border-radius: 8px;
-    display: flex;
-    margin: 0 auto; /* Center the image */
-    display: block;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.speed-control {
-    color: white;
-    margin-top: 10px;
+/* Result container styling */
+.result-container {
+    flex: 1 1 500px; /* Take up equal space, minimum width of 500px */
+    max-width: 800px;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Styling the range slider track */
-.speed-control input[type="range"] {
-    -webkit-appearance: none;  /* Remove default browser styles */
-    appearance: none;
-    width: 300px;
-    height: 8px;   /* Track height */
-    background: #ddd; /* Track background color */
-    border-radius: 5px;
-    outline: none;
+/* Error message styling */
+.error-message {
+    color: red;
+    font-weight: bold;
 }
 
-.speed-control input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: orange;  /* Orange color for the thumb */
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-/* Centering styles */
-.video-container {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    flex-direction: column; /* Stack children vertically */
-    height: 80vh; /* Adjust height as needed */
-}
-
-#knnVideo {
-    border-radius: 8px; /* Apply border-radius to the video */
+/* Make the side-by-side layout stack vertically on smaller screens */
+@media (max-width: 768px) {
+    .side-by-side-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items */
+    }
 }
 
