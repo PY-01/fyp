@@ -4,30 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>k-Means Results</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
-    
+
     <!-- Link to the styles.css file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
 </head>
 <body>
-    <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">Machine Learning Made Visual (MLMV)</div>
-        
-        <!-- Hamburger Icon for Small Screens -->
-        <div class="menu-toggle" id="mobile-menu">
-            &#9776; <!-- Hamburger icon (three bars) -->
-        </div>
-
+        <div class="menu-toggle" id="mobile-menu">&#9776;</div>
         <ul class="nav-links" id="nav-links">
             <li><a href="/">Home</a></li>
-            
             <li class="dropdown">
                 <a href="#" class="dropbtn">Algorithms</a>
                 <div class="dropdown-content">
@@ -36,8 +29,6 @@
                     <a href="/kmeans">k-Means</a>
                 </div>
             </li>
-            
-            <!-- Link "Pre-Built Examples" to the /explore route -->
             <li><a href="/explore">Pre-Built Examples</a></li>
             <li><a href="/theory">Theory</a></li>
             <li><a href="/guides">Guides</a></li>
@@ -45,24 +36,44 @@
         </ul>
     </nav>
 
-    <!-- Main Content Container -->
+    <!-- Main Content Container with Flexbox -->
     <div class="content-container">
-        <h1><i>k</i>-Means Clustering Results</h1>
-        <img src="data:image/png;base64,{{ img }}" alt="K-means Clustering Result" class="centered-image">
-        <br>
-        <a href="{{ url_for('kmeans.kmeans_home') }}">Back to Home</a>
+        <div class="side-by-side-container">
+            <!-- Form Section -->
+            <form action="{{ url_for('kmeans.run_kmeans') }}" method="POST" class="input-form">
+                <label for="k_value">Number of Clusters (k):</label>
+                <input type="number" id="k_value" name="k_value" min="1" required>
+                <br>
+                <label for="cx">Initial Centroids X (comma-separated):</label>
+                <input type="text" id="cx" name="cx" required>
+                <br>
+                <label for="cy">Initial Centroids Y (comma-separated):</label>
+                <input type="text" id="cy" name="cy" required>
+                <br>
+                <button type="submit">Run K-Means</button>
+            </form>
+
+            <!-- Animation or Error Section -->
+            <div class="result-container">
+                {% if animation_html %}
+                <h2>Clustering Animation</h2>
+                <div class="animation-container">
+                    {{ animation_html | safe }}
+                </div>
+                {% elif error %}
+                <p class="error-message">{{ error }}</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    
-    <!-- Footer -->
+
     <footer class="footer">
         <p>© 2024 Loo Pei Yin. All rights reserved.</p>
     </footer>
-    
+
     <script>
-        // JavaScript to handle the hamburger menu toggle
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('nav-links');
-
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('show');
         });
