@@ -42,15 +42,24 @@
         </ul>
     </nav>
     
-    <!-- Content Container -->
     <div class="content-container">
-        <h1><i>k</i>-Nearest Neighbours Results</h1>
+        <h1><i>k</i>-Nearest Neighbors (k-NN) Results</h1>
         
-        <!-- Video of k-NN Animation -->
+        <!-- Animation of k-NN Results -->
         <div class="animation-container">
             {{ animation_html | safe }}
         </div>
-        
+
+        <!-- Interpretation Section -->
+        <div class="interpretation">
+            <h2>Understanding the Animation</h2>
+            <ul>
+                <li><strong>Distance Lines:</strong> Dotted lines indicate the distance between the new point (marked in red) and each data point in the dataset.</li>
+                <li><strong>Nearest Neighbors:</strong> The k-nearest neighbors are highlighted with solid lines connecting them to the new point. These points will influence the final classification.</li>
+                <li><strong>Class Assignment:</strong> After identifying the nearest neighbors, the algorithm assigns the new point to the majority class among them. The new point’s color will change to represent its assigned class (e.g., purple for Class 0, orange for Class 1).</li>
+                <li><strong>Interactive Playback:</strong> You can use the controls to play, pause, and replay the animation to examine each step in detail.</li>
+            </ul>
+        </div>
     </div>
     
     <!-- Footer -->
