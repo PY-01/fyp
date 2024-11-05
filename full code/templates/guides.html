@@ -29,7 +29,6 @@
                 <a href="#" class="dropbtn">Algorithms</a>
                 <div class="dropdown-content">
                     <a href="/knn">k-NN</a>
-                    <a href="/dc">Decision Trees</a>
                     <a href="/kmeans">k-Means</a>
                 </div>
             </li>
@@ -47,21 +46,15 @@
         <p>Welcome to the guides section! Here, you can find detailed instructions and tips to help you get started with exploring and understanding machine learning algorithms using our platform.</p>
         
         <div class="guide-card">
-            <h2>Getting Started with k-NN</h2>
-            <p>Learn how to use the k-Nearest Neighbors (k-NN) algorithm. Follow our step-by-step guide to understand how to input your data, adjust parameters, and visualize the results.</p>
-            <a href="#" class="btn btn-primary"><i>k</i>-NN</a>
+            <h2>Getting Started with <i>k</i>-NN</h2>
+            <p>Learn how to use the <i>k</i>-Nearest Neighbors (<i>k</i>-NN) algorithm. Follow our step-by-step guide to understand how to input your data, adjust parameters, and visualise the results.</p>
+            <a href="{{ url_for('knn_guide') }}" class="btn btn-primary"><i>k</i>-NN</a>
         </div>
         
         <div class="guide-card">
-            <h2>Understanding Decision Trees</h2>
-            <p>Discover the fundamentals of Decision Trees. Our guide will walk you through the process of setting up your decision tree model and interpreting the outcomes.</p>
-            <a href="#" class="btn btn-primary">Decision Trees</a>
-        </div>
-        
-        <div class="guide-card">
-            <h2>Exploring k-Means Clustering</h2>
-            <p>Find out how to apply k-Means Clustering to your data. We provide a comprehensive guide to help you understand the clustering process and its visual representation.</p>
-            <a href="#" class="btn btn-primary"><i>k</i>-Means Clustering</a>
+            <h2>Exploring <i>k</i>-Means Clustering</h2>
+            <p>Find out how to apply <i>k</i>-Means Clustering to your data. We provide a comprehensive guide to help you understand the clustering process and its visual representation.</p>
+            <a href="{{ url_for('kmeans_guide') }}" class="btn btn-primary"><i>k</i>-Means Clustering</a>
         </div>
     </section>
 
