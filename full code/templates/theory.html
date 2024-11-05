@@ -29,7 +29,6 @@
                 <a href="#" class="dropbtn">Algorithms</a>
                 <div class="dropdown-content">
                     <a href="/knn">k-NN</a>
-                    <a href="/dc">Decision Trees</a>
                     <a href="/kmeans">k-Means</a>
                 </div>
             </li>
@@ -79,7 +78,7 @@
         <h3>4 types of computing <i>k</i>-NN distance metrics</h3>
         <p>The key to the <i>k</i>-NN algorithm is determining the distance between the query point and the other data points. Determining distance metrics enables decision boundaries. These boundaries create different data point regions. There are different methods used to calculate distance:</p>
         <ul>
-            <li>Euclidean distance is the most common distance measure, which measures a straight line between the query point and the other point being measured.</li>
+            <li><b>Euclidean distance</b> is the most common distance measure, which measures a straight line between the query point and the other point being measured.</li>
             
             <math xmlns="http://www.w3.org/1998/Math/MathML">
                 <mrow>
@@ -120,7 +119,7 @@
                             <mo>)</mo>
                         </mrow>
                     </math>
-                    represents the Euclidean Distance between the two points p and q.
+                    represents the Euclidean distance between the two points p and q.
                 </li>
                 
                 <li>
@@ -150,15 +149,71 @@
                 </li>
             </ul>
     
-            <li></li>
-            <li></li>
+            <li><b>Manhattan distance</b> metric is generally used when we are interested in the total distance traveled by the object instead of the displacement.</li>
+            
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>d</mi>
+                <mo>(</mo>
+                <mi>p</mi>
+                <mo>,</mo>
+                <mi>q</mi>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mo>|</mo>
+                <msub><mi>x</mi><mn>1</mn></msub>
+                <mo>-</mo>
+                <msub><mi>x</mi><mn>2</mn></msub>
+                <mo>|</mo>
+                <mo>+</mo>
+                <mo>|</mo>
+                <msub><mi>y</mi><mn>1</mn></msub>
+                <mo>-</mo>
+                <msub><mi>y</mi><mn>2</mn></msub>
+                <mo>|</mo>
+              </mrow>
+            </math>
+
+
+            <li><b>Minkowski distance</b> is a generalization of Euclidean and Manhattan distance metrics, which enables the creation of other distance metrics. It is calculated in a normed vector space. In the Minkowski distance, p is the parameter that defines the type of distance used in the calculation. If p=1, then the Manhattan distance is used. If p=2, then the Euclidean distance is used.</li>
+            
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>d</mi>
+                <mo>(</mo>
+                <mi>p</mi>
+                <mo>,</mo>
+                <mi>q</mi>
+                <mo>)</mo>
+                <mo>=</mo>
+                <msup>
+                  <mfenced>
+                    <mrow>
+                      <mo>(</mo>
+                      <mo>&#x2211;</mo> <!-- Summation symbol -->
+                      <msub><mi>i</mi><mo>1</mo></msub>
+                      <mo>&#x2026;</mo> <!-- Ellipsis -->
+                      <mo>n</mo>
+                      <mrow>
+                        <mo>|</mo>
+                        <msub><mi>x</mi><mi>i</mi></msub>
+                        <mo>-</mo>
+                        <msub><mi>y</mi><mi>i</mi></msub>
+                        <mo>|</mo>
+                        <msup><mo>)</mo><mi>p</mi></msup>
+                      </mrow>
+                    </mrow>
+                  </mfenced>
+                  <mfrac>
+                    <mn>1</mn>
+                    <mi>p</mi>
+                  </mfrac>
+                </msup>
+              </mrow>
+            </math>
+
             <li></li>
         </ul>
-    
-        <h2>Decision Trees</h2>
-        <p>
-            Decision Trees are non-parametric supervised learning methods used for classification and regression. A tree-like structure is created where each node represents a feature, each branch a decision rule, and each leaf a class or value.
-        </p>
     
         <h2><i>k</i>-Means Clustering</h2>
         <p>
