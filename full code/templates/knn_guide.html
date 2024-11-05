@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k-Nearest Neighbors (k-NN) Guide</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776; <!-- Hamburger icon (three bars) -->
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- k-NN Guide Section -->
+    <section class="guides-section">
+        <h1>Welcome to the <i>k</i>-Nearest Neighbours guide!</h1>
+        <p>This page will walk you through using the <i>k</i>-NN algorithm on our platform, from inputting data to adjusting parameters and visualising results.</p>
+    
+        <!-- Step-by-Step Instructions Section -->
+        <div class="steps-section">
+            <h2>Steps to Use k-NN</h2>
+            <ol>
+                <li>Input your dataset values (coordinates and class labels).</li>
+                <img src="{{ url_for('static', filename='img/knn_guide1.jpg') }}" alt="knn_guide1" class="guide-image">
+                
+                <li>Select the value of <strong><i>k</i></strong>, the number of nearest neighbours to consider.</li>
+                <img src="{{ url_for('static', filename='img/knn_guide2.jpg') }}" alt="knn_guide2" class="guide-image">
+                
+                <li>Click "Run" to see the classified results and visualisation.</li>
+                <img src="{{ url_for('static', filename='img/knn_guide3.jpg') }}" alt="knn_guide2" class="guide-image">
+                <ul>
+                    <li><strong>Buttons:</strong>
+                        <ul>
+                            <li><strong>Play:</strong> Starts the animation of the <i>k</i>-NN algorithm's classification process.</li>
+                            <li><strong>Pause:</strong> Pauses the current animation at its current frame, allowing you to observe a specific moment.</li>
+                            <li><strong>Forward:</strong> Moves the animation one step forward, showing the next frame of the process.</li>
+                            <li><strong>Rewind:</strong> Moves the animation one step backward, showing the previous frame.</li>
+                            <li><strong>End:</strong> Jumps to the final frame, displaying the completed classification result.</li>
+                            <li><strong>Reset:</strong> Resets the animation to the starting frame, allowing you to replay the entire process from the beginning.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Radio Buttons (Playback Options):</strong>
+                        <ul>
+                            <li><strong>Once:</strong> Plays the animation once, stopping automatically at the final frame.</li>
+                            <li><strong>Loop:</strong> Continuously repeats the animation from the beginning after reaching the end.</li>
+                            <li><strong>Reflect:</strong> Plays the animation forward and then in reverse, creating a back-and-forth effect.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Slider (Animation Speed):</strong>
+                        <ul>
+                            <li><strong>Animation Speed:</strong> Controls the speed of the animation. Moving the slider to the right increases the speed, while moving it to the left slows down the animation, allowing for a closer look at each step of the process.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </ol>
+        </div>
+        <a href="javascript:history.back()" class="btn back-button">← Back</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // JavaScript to handle the hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    </script>
+</body>
+</html>
