@@ -14,10 +14,20 @@ app.register_blueprint(kmeans_bp, url_prefix='/kmeans')
 def home():
     return render_template('mlmv.html')
 
-# Get Started route
+# Get Started route (Guides page)
 @app.route('/guides')
 def guides():
     return render_template('guides.html')
+
+# k-NN Guide route
+@app.route('/guides/knn')
+def knn_guide():
+    return render_template('knn_guide.html')
+
+# kmeans Guide route
+@app.route('/guides/kmeans')
+def kmeans_guide():
+    return render_template('kmeans_guide.html')
 
 # Explore route
 @app.route('/explore')
@@ -34,7 +44,7 @@ def theory():
 def about():
     return render_template('about.html')
 
-# Example routes
+# Example routes for k-NN and K-means
 @app.route('/knn-example')
 def knn_example():
     return render_template('knn_example.html')
