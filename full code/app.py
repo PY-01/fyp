@@ -1,6 +1,8 @@
 from flask import Flask, render_template
-from knn_app.routes import bp as knn_bp
-from kmeans_app.routes import bp as kmeans_bp
+from knn_app.routes import bp as knn_bp  # Blueprint for knn_app
+from kmeans_app.routes import bp as kmeans_bp  # Blueprint for kmeans_app
+from knn_example.routes import bp as knn_example_bp  # Blueprint for knn_example
+from kmeans_example.routes import bp as kmeans_example_bp
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Needed for session management
@@ -8,6 +10,8 @@ app.secret_key = 'supersecretkey'  # Needed for session management
 # Register blueprints
 app.register_blueprint(knn_bp, url_prefix='/knn')
 app.register_blueprint(kmeans_bp, url_prefix='/kmeans')
+app.register_blueprint(knn_example_bp, url_prefix='/knn_example')
+app.register_blueprint(kmeans_example_bp, url_prefix='/kmeans_example')
 
 # Home route
 @app.route('/')
@@ -24,7 +28,7 @@ def guides():
 def knn_guide():
     return render_template('knn_guide.html')
 
-# kmeans Guide route
+# K-Means Guide route
 @app.route('/guides/kmeans')
 def kmeans_guide():
     return render_template('kmeans_guide.html')
