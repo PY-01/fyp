@@ -3,172 +3,148 @@ body {
     font-family: 'Source Sans 3', sans-serif;
     background-color: #2D2D2D;
     color: #333;
-    margin: 0; /* Remove any default margin */
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    margin: 0;
+    overflow-x: hidden;
 }
 
-/* Content container style to prevent navbar from being affected */
+/* Content container style */
 .content-container {
-    padding: 80px 20px; /* Adjust the padding values as needed */
+    padding: 80px 20px;
 }
 
 /* Link styles */
 a {                       
-    text-decoration: none; /* Remove the underline for URLs */
+    text-decoration: none;
     color: white;
 }
 
-a:hover, a:focus { /* Change link color on hover */
+a:hover, a:focus {
     color: #b3bdff;
 }
 
+/* Navbar styling */
 .navbar {
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    width: 98%; /* Make sure the navbar spans the full width */
-    top: 0; /* Align the navbar to the top of the page */
+    width: 98%;
+    top: 0;
     z-index: 10;
-    background-color: #1B1B1B; /* Add a background color */
-    border-bottom: 2px solid #FFA500; /* Optional: Add a border to differentiate it */
+    background-color: #1B1B1B;
+    border-bottom: 2px solid #FFA500;
 }
 
 /* Heading style */
 h1 {
     color: black;
-    background-color: #FFA500; /* Orange */
+    background-color: #FFA500;
     margin-bottom: 20px;
     text-align: center;
     border-radius: 10px;
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
-/* Form styling */
-form {
+h2 {
+    font-size: 2rem;
+}
+
+/* Single-line form styling */
+form.single-line-form {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: 0 auto; /* Center the form */
+    max-width: 100%;
     text-align: center;
-    font-size:1.5rem;
+    font-size: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Label styling */
-label {
-    display: block;
-    margin-bottom: 5px;
+form.single-line-form label {
     font-weight: bold;
+    margin: 0 5px;
 }
 
 /* Input fields styling */
-input[type="text"],
-input[type="number"] {
-    width: 100%;
+form.single-line-form input[type="text"],
+form.single-line-form input[type="number"] {
+    width: 80px;
     padding: 8px;
-    margin: 10px 0 20px 0;
+    margin: 0 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box; /* Ensures padding does not increase width */
-    font-size:1.5rem;
-}
-
-/* Buttons container */
-.button-container {
-    display: flex; /* Use flexbox to place buttons side by side */
-    justify-content: space-between; /* Distribute space between buttons */
+    font-size: 1rem;
 }
 
 /* Button styling */
-button {
-    flex: 1; /* Make both buttons take equal width */
-    padding: 12px;
-    margin-left:20px;
-    background-color: #6A0DAD; /* Lighter Purple */
+form.single-line-form button {
+    padding: 10px 15px;
+    margin: 0 5px;
+    background-color: #6A0DAD;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
-    transition: background-color 0.3s ease; /* Adds a smooth transition effect */
+    transition: background-color 0.3s ease;
 }
 
-/* Hover effect for the buttons */
-button:hover {
-    background-color: #7385fa; /* Darker shade of blue on hover */
+/* Hover effect for buttons */
+form.single-line-form button:hover {
+    background-color: #7385fa;
+}
+
+/* Result container styling */
+.result-container {
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Centered image styling */
 .centered-image {
-    max-width: 80%; /* Makes the image responsive to the screen size */
-    max-height: 80vh; /* Ensure it doesn't overflow the viewport height */
-    margin: 0 auto; /* Center the image */
-    display: block; /* Make the image a block element for margin auto to work */
-    border: 2px solid #ccc; /* Optional: Add a border around the image */
-    border-radius: 8px; /* Optional: Add rounded corners */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    max-width: 80%;
+    max-height: 80vh;
+    margin: 0 auto;
+    display: block;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
     
+/* Animation container styling */
 .animation-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%; /* Ensures it takes up the full container width */
-    max-width: 90%; /* Restrict maximum width to fit inside the container */
+    width: 100%;
+    max-width: 90%;
     margin: 20px auto;
     border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden;
     background-color: #fff;
     padding: 10px;
-    box-sizing: border-box; /* Include padding in width calculation */
-    
+    box-sizing: border-box;
 }
     
-.animation-container canvas, .animation-container img {
+.animation-container canvas, 
+.animation-container img {
     width: 100% !important;
     height: auto !important;
-    max-height: 600px; /* Allow for a larger height */
+    max-height: 600px;
     object-fit: contain;
 }  
-
-/* Main container for side-by-side form and results */
-.side-by-side-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 20px;
-    justify-content: space-around;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Form styling within side-by-side layout */
-.input-form {
-    flex: 1 1 150px; /* Smaller space allocation, minimum width of 150px */
-    max-width: 250px; /* Decrease max width */
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Result container styling */
-.result-container {
-    flex: 5 1 800px; /* Larger space allocation, minimum width of 800px */
-    max-width: 1200px; /* Increase max width */
-    padding: 20px;
-    text-align: center;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 
 /* Error message styling */
 .error-message {
@@ -176,16 +152,69 @@ button:hover {
     font-weight: bold;
 }
 
-/* Make the side-by-side layout stack vertically on smaller screens */
+/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
-    .side-by-side-container {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center items */
+    form.single-line-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    form.single-line-form input[type="text"],
+    form.single-line-form input[type="number"],
+    form.single-line-form button {
+        width: 100%;
+        margin: 5px 0;
     }
 }
 
 .interpretation {
-    color:white;
-    font-size:1.5rem;
+    color: white;
+    font-size: 1.5rem;
 }
 
+.instructions-and-theory {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    color: white;
+}
+
+.input-instructions,
+.knn-theory {
+    width: 48%;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.input-instructions p,
+.knn-theory p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.input-instructions strong,
+.knn-theory strong {
+    color: #ffc107;
+}
+
+.knn-theory ul {
+    margin-left: 20px;
+    list-style: disc;
+}
+
+.knn-theory ul li {
+    margin-bottom: 5px;
+}
+
+
+/* Footer styling */
+.footer {
+    background-color: #1B1B1B;
+    font-size: 1.5rem;
+    padding: 20px;
+    text-align: center;
+    color: #FFA500; /* Orange */
+    margin-top: 40px;
+}
