@@ -3,67 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>k-NN Example - Machine Learning Made Visual</title>
+    <title>k-NN Example</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <!-- Link to the styles.css file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-
-    <!-- Header Section -->
-    <header class="example-header">
-        <h1>k-Nearest Neighbors (k-NN) Algorithm</h1>
-        <p>Explore how the k-NN algorithm classifies new data points based on the closest training examples.</p>
-    </header>
-
-    <!-- Interactive Visualization Section -->
-    <section class="visualization">
-        <h2>Interactive Visualization</h2>
-        <canvas id="knnChart"></canvas> <!-- Canvas for Chart.js -->
-
-        <!-- Controls for adjusting parameters -->
-        <div class="controls">
-            <label for="k-value">Number of Neighbors (k):</label>
-            <input type="range" id="k-value" name="k-value" min="1" max="15" value="3">
-            <span id="k-value-display">3</span> <!-- Display current k-value -->
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776;
         </div>
-    </section>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    
+    <section class="knn_example">
+    <div class="content-container">
+        <h1><i>k</i>-NN Example</h1>
+        <div class="input-instructions">
+            <p><strong>Please enter your values in a comma-separated format.</strong> For example, for x/y-coordinates, enter values like 1,2,3,4, and for Input Classes, use values like 0,1,1,0 where each number represents a class label.</p>
+            <p><strong>Note:</strong> Ensure there are no spaces between the values.</p>
+            <p><strong>Tip:</strong> You can also input multiple <i>k</i> values to perform comparisons. Enter 1-4 values in the range of 2-15, separated by commas. For example: 3,5,7.</p>
+        </div>
 
-    <!-- Explanation Section -->
-    <section class="explanation">
-        <h2>How k-NN Works</h2>
-        <p>The k-Nearest Neighbors (k-NN) algorithm classifies data points based on their proximity to existing labeled data points. Adjust the slider above to change the number of neighbors (k) and see how it affects the classification results.</p>
-    </section>
+        <div class="side-by-side-container">
+            <form class="input-form" id="knn-form">  <!-- Added ID here -->
+                <label for="x_data">x-coordinates (Train Data):</label>
+                <input type="text" id="x_data" name="x_data" required>
+    
+                <label for="y_data">y-coordinates (Train Data):</label>
+                <input type="text" id="y_data" name="y_data" required>
+    
+                <label for="classes">Classes:</label>
+                <input type="text" id="classes" name="classes" required>
+    
+                <label for="new_x">x-coordinate (Test Data):</label>
+                <input type="number" step="any" id="new_x" name="new_x" required>
+    
+                <label for="new_y">y-coordinate (Test Data):</label>
+                <input type="number" step="any" id="new_y" name="new_y" required>
+    
+                <label for="k_values"><i>k</i> Values:</label>
+                <input type="text" id="k_values" name="k_values" required>
 
-    <!-- Footer Section -->
-    <footer class="footer">
-        <p>© 2024 Machine Learning Made Visual. All rights reserved. | <a href="/guides">Guides</a></p>
-    </footer>
+                <div class="button-container">
+                    <button type="reset">Reset</button>
+                    <button type="submit">Run</button> <!-- Submit Button -->
+                </div>
+            </form>
+    
+            <div class="result-container">
+                <h2><i>k</i>-NN Animation Result</h2>
+                <div class="animation-container" id="animation-container"></div>
+            </div>
+        </div>
+        
+        <a href="javascript:history.back()" class="btn back-button">← Back</a>
+        </section>
 
-    <!-- JavaScript for interactive elements -->
-    <script>
-        const ctx = document.getElementById('knnChart').getContext('2d');
-        const knnChart = new Chart(ctx, {
-            type: 'scatter',
-            data: {
-                datasets: [{
-                    label: 'Training Data',
-                    data: [{x: 1, y: 2}, {x: 2, y: 3}, {x: 3, y: 1}],  // Example data points
-                    backgroundColor: 'rgb(75, 192, 192)'
-                }]
-            },
-            options: {
-                scales: {
-                    x: { beginAtZero: true },
-                    y: { beginAtZero: true }
-                }
-            }
-        });
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+        </footer>
+        
+        <script>
+            // JavaScript to handle the hamburger menu toggle
+            const menuToggle = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('show');
+            });
+            
+            // Correctly targeting #knn-form by ID
+            $('#knn-form').on('submit', function(e) {
+                e.preventDefault();
 
-        document.getElementById('k-value').addEventListener('input', function() {
-            document.getElementById('k-value-display').innerText = this.value;
-            // Update chart logic here
-        });
-    </script>
-
+                $.ajax({
+                    url: "/knn_example/input_new_point",  // Correct URL with knn_example prefix
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log("AJAX response:", response); // Log the response for debugging
+                        if (response.animation_html) {
+                            $('#animation-container').html(response.animation_html);
+                        } else if (response.error) {
+                            $('#animation-container').html('<p class="error">' + response.error + '</p>');
+                        } else {
+                            $('#animation-container').html('<p class="error">Unknown error occurred.</p>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error); // Log error details
+                        $('#animation-container').html('<p>An error occurred. Please check your input and try again.</p>');
+                    }
+                });
+            });
+        </script>
+    </div>
 </body>
 </html>
