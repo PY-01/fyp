@@ -42,36 +42,110 @@
     </nav>
     
     <div class="content-container">
-        <h1><i>k</i>-Nearest Neighbours (<i>k</i>-NN) Results</h1>
-        
-        <!-- Animation of k-NN Results -->
-        <div class="animation-container">
-            {{ animation_html | safe }}
-        </div>
+    <h1><i>k</i>-Nearest Neighbours (<i>k</i>-NN) Animation</h1>
 
-        <!-- Interpretation Section -->
-        <div class="interpretation">
-            <h2>Understanding the Animation</h2>
+    <div class="instructions-and-theory">
+        <!-- Basic Theory Section -->
+        <div class="knn-theory">
+            <p><strong>How <i>k</i>-NN Works</strong></p>
             <ul>
-                <li><strong>Distance Lines:</strong> Dotted lines indicate the distance between the new point (marked in red) and each data point in the dataset.</li>
-                <li><strong>Nearest Neighbours:</strong> The <i>k</i>-nearest neighbours are highlighted with solid lines connecting them to the new point. These points will influence the final classification.</li>
-                <li><strong>Class Assignment:</strong> After identifying the nearest neighbours, the algorithm assigns the new point to the majority class among them. The new point’s color will change to represent its assigned class (e.g., purple for Class 0, orange for Class 1).</li>
-                <li><strong>Interactive Playback:</strong> You can use the controls to play, pause, and replay the animation to examine each step in detail.</li>
+                <li>It identifies the <i>k</i> nearest neighbours to a new data point.</li>
+                <li>The majority class of these neighbours determines the classification.</li>
+                <li>The distance metric determines how the closeness of points is measured, with Euclidean distance being the most common choice for its simplicity and geometric relevance.</li>
+                <li>Picking the right k value is important because a small k can focus too much on noise, while a large k might miss important local details.</li>
             </ul>
         </div>
+        
+        <!-- Input Instructions -->
+        <div class="input-instructions">
+            <p><strong>Instructions</strong></p>
+            <p><b>Please enter your values in a comma-separated format.</b> For example, for x/y-coordinates, enter values like 1,2,3,4, and for Input Classes, use values like 0,1,1,0 where each number represents a class label.</p>
+            <p><b>Note:</b> Ensure there are no spaces between the values.</p>
+            <p><b>Tip:</b> You can also input multiple <i>k</i> values to perform comparisons. Enter 1-4 values, separated by commas. For example: 3,5,7.</p>
+        </div>
+    </div>
+
+    <!-- Single-line input form -->
+    <form id="knnForm" class="input-form single-line-form">
+        <label for="x_data">x:</label>
+        <input type="text" id="x_data" name="x_data" required>
+
+        <label for="y_data">y:</label>
+        <input type="text" id="y_data" name="y_data" required>
+
+        <label for="classes">Classes:</label>
+        <input type="text" id="classes" name="classes" required>
+
+        <label for="new_x">New x:</label>
+        <input type="number" id="new_x" name="new_x" required step="1">
+
+        <label for="new_y">New y:</label>
+        <input type="number" id="new_y" name="new_y" required step="1">
+
+        <label for="k_value">k (1-4):</label>
+        <input type="text" id="k_value" name="k_values" required pattern="^([1-9]\d*)(,([1-9]\d*)){0,3}$">
+
+        <button type="reset">Reset</button>
+        <button type="button" id="submitForm">Run</button>
+    </form>
+
+    <div class="result-container">
+        <h2>Result</h2>
+        <div class="animation-container" id="animationContainer"></div>
     </div>
     
-    <!-- Footer -->
+    <div class="interpretation">
+        <ul>
+            <li><p>Dotted lines: Connect the new point (red star) to all other points in the dataset, representing the distances between them.</p></li>
+            <li><p>Thicker lines: Highlights the <i>k</i> nearest distance.</p></li>
+            <li><p>Distinct Class: Class 0 represented by purple diamond-shaped points and Class 1 by orange triangular points.</p></li>
+            <li><p>Test Data: Initial color is red, but it changes to the predicted class's color (purple or orange) after the classification decision is made.</p></li>
+            <li><p><b>Buttons and Animation Controls</b></p></li>
+                <ul>
+                    <li><p><b>Play</b>: Start the Animation.</p></li>
+                    <li><p><b>Pause</b>: Stop the Animation.</p></li>
+                    <li><p><b>Step Forward/Backward</b>: Move frame by frame to analyse the decision-making process.</p></li>
+                    <li><p><b>Once</b>: The animation plays through a single time and stops.</p></li>
+                    <li><p><b>Loop</b>: The animation repeats continuously.</p></li>
+                    <li><p><b>Reflect</b>: The animation plays forward and then reverses back to the start.</p></li>
+                    <li><p><b>Speed Slider</b>: Adjusts the speed of the animation, allowing you to slow down or speed up the process.</p></li>
+                </ul>
+        </ul>
+    </div>
+</div>
+
     <footer class="footer">
         <p>© 2024 Loo Pei Yin. All rights reserved.</p>
     </footer>
     
+    <!-- JQuery and AJAX Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // JavaScript to handle the hamburger menu toggle
+        // Hamburger menu toggle
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('nav-links');
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('show');
+        });
+
+        // Handle form submission with AJAX
+        $('#submitForm').on('click', function () {
+            const formData = $('#knnForm').serialize();
+            $.ajax({
+                url: "{{ url_for('knn.index') }}",
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.animation_html) {
+                        $('#animationContainer').html(response.animation_html);
+                    } else if (response.error) {
+                        alert(response.error);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while processing the request.');
+                }
+            });
         });
     </script>
 </body>
