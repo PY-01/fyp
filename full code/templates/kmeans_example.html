@@ -3,71 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>k-Means Clustering Example - Machine Learning Made Visual</title>
+    <title>k-Means Example</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <!-- Link to the styles.css file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <!-- Including Chart.js for visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-
-    <!-- Header Section -->
-    <header class="example-header">
-        <h1>k-Means Clustering Algorithm</h1>
-        <p>Visualize how k-means clustering groups similar data points together in a dataset.</p>
-    </header>
-
-    <!-- Interactive Visualization Section -->
-    <section class="visualization">
-        <h2>Interactive Visualization</h2>
-        <!-- Canvas for the Chart.js visualization -->
-        <canvas id="kmeansChart"></canvas>
-
-        <!-- Controls for adjusting parameters -->
-        <div class="controls">
-            <label for="clusters">Number of Clusters (k):</label>
-            <input type="range" id="clusters" name="clusters" min="1" max="10" value="3">
-            <span id="clusters-display">3</span>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776;
         </div>
-    </section>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    
+    <section class="kmeans_example">
+        <div class="content-container">
+            <h1><i>k</i>-Means Example</h1>
+            <div class="input-instructions">
+                <p><strong>Please enter your values in a comma-separated format.</strong> For example, for x/y-coordinates, enter values like 1,2,3,4, and for Input Classes, use values like 0,1,1,0 where each number represents a class label.</p>
+                <p><strong>Note:</strong> Ensure there are no spaces between the values.</p>
+                <p><strong>Tip:</strong> You can also input multiple <i>k</i> values to perform comparisons. Enter 1-4 values in the range of 2-15, separated by commas. For example: 3,5,7.</p>
+            </div>
 
-    <!-- Explanation Section -->
-    <section class="explanation">
-        <h2>How k-Means Clustering Works</h2>
-        <p>k-Means is an unsupervised learning algorithm that is used for clustering similar data points together. The algorithm tries to minimize the distance between points in a cluster and the cluster center.</p>
-    </section>
+            <div class="side-by-side-container">
+                <form id="kmeans-form" method="POST" class="input-form">
+                    <label for="x_data">Input x (comma-separated): </label>
+                    <input type="text" id="x_data" name="x_data" value="{{ x }}" required>
+                    <br>
+                    <label for="y_data">Input y (comma-separated): </label>
+                    <input type="text" id="y_data" name="y_data" value="{{ y }}" required>
+                    <br>
+                    <h1>Input Initial Centroids</h1>
+                    <label for="k_value">Number of Clusters (k):</label>
+                    <input type="number" id="k_value" name="k_value" min="1" value="{{ k }}" required>
+                    <br>
+                    <label for="cx">Initial Centroids x (comma-separated):</label>
+                    <input type="text" id="cx" name="cx" value="{{ cx }}" required>
+                    <br>
+                    <label for="cy">Initial Centroids y (comma-separated):</label>
+                    <input type="text" id="cy" name="cy" value="{{ cy }}" required>
+                    <br>
+                    <button type="reset">Reset</button>
+                    <button type="submit">Run</button>
+                </form>
 
-    <!-- Footer Section -->
-    <footer class="footer">
-        <p>© 2024 Machine Learning Made Visual. All rights reserved. | <a href="/guides">Guides</a></p>
-    </footer>
+                <div class="result-container">
+                    <h2><i>k</i>-Means Animation Result</h2>
+                    <div class="animation-container" id="animation-container"></div>
+                </div>
+            </div>
+            
+            <a href="javascript:history.back()" class="btn back-button">← Back</a>
+        </section>
 
-    <!-- JavaScript for interactive elements -->
-    <script>
-        // Initialize the Chart.js scatter plot
-        const ctx = document.getElementById('kmeansChart').getContext('2d');
-        const kmeansChart = new Chart(ctx, {
-            type: 'scatter',
-            data: {
-                datasets: [{
-                    label: 'Data Points',
-                    data: [{x: 1, y: 2}, {x: 2, y: 3}, {x: 3, y: 1}],  // Example data points
-                    backgroundColor: 'rgb(255, 99, 132)'
-                }]
-            },
-            options: {
-                scales: {
-                    x: { beginAtZero: true },
-                    y: { beginAtZero: true }
-                }
-            }
-        });
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+        </footer>
+        
+        <script>
+            // JavaScript to handle the hamburger menu toggle
+            const menuToggle = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('show');
+            });
 
-        // Update chart when cluster count changes
-        document.getElementById('clusters').addEventListener('input', function() {
-            document.getElementById('clusters-display').innerText = this.value;
-            // Placeholder for updating the visualization logic
-        });
-    </script>
-
+            // AJAX form submission for k-means example
+            $('#kmeans-form').on('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
+                
+                // Send AJAX request
+                $.ajax({
+                    url: "{{ url_for('kmeans_example') }}",  // The endpoint that handles the POST request
+                    type: "POST",
+                    data: $(this).serialize(),  // Serialize form data
+                    dataType: "json",  // Expect a JSON response
+                    success: function(response) {
+                        console.log("AJAX response:", response); // Log the response for debugging
+                        if (response.animation_html) {
+                            // If animation_html is present in the response, insert it into the animation-container
+                            $('#animation-container').html(response.animation_html);
+                        } else if (response.error) {
+                            // Display error if there's any
+                            $('#animation-container').html('<p class="error">' + response.error + '</p>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error); // Log any AJAX error for debugging
+                        $('#animation-container').html('<p>An error occurred. Please check your input and try again.</p>');
+                    }
+                });
+            });
+        </script>
+    </div>
 </body>
 </html>
