@@ -24,15 +24,13 @@
         
         <ul class="nav-links" id="nav-links">
             <li><a href="/">Home</a></li>
-            
             <li class="dropdown">
                 <a href="#" class="dropbtn">Algorithms</a>
                 <div class="dropdown-content">
-                    <a href="/knn">k-NN</a>
-                    <a href="/kmeans">k-Means</a>
+                    <a href="/knn"><i>k</i>-NN</a>
+                    <a href="/kmeans"><i>k</i>-Means</a>
                 </div>
             </li>
-            
             <li><a href="/explore">Pre-Built Examples</a></li>
             <li><a href="/theory">Theory</a></li>
             <li><a href="/guides">Guides</a></li>
@@ -45,19 +43,17 @@
         <h1>Explore Pre-Built Machine Learning Examples</h1>
         <p>Quickly dive into interactive examples to understand how different machine learning algorithms work. Adjust parameters, visualize outcomes, and learn through hands-on experience!</p>
     
-        <div class="example-card">
+        <a href="/knn-example" class="example-card">
             <img src="{{ url_for('static', filename='img/knn_example.jpg') }}" alt="k-NN Example">
-            <h2>k-Nearest Neighbors (k-NN)</h2>
-            <p>Understand how the k-NN algorithm classifies new data points based on its neighbors.</p>
-            <a href="/knn-example" class="btn btn-primary">Try It</a>
-        </div>
+            <h2><i>k</i>-Nearest Neighbours (<i>k</i>-NN)</h2>
+            <p>Understand how the <i>k</i>-NN algorithm classifies new data points based on its neighbours.</p>
+        </a>
             
-        <div class="example-card">
+        <a href="/kmeans-example" class="example-card">
             <img src="{{ url_for('static', filename='img/kmeans_example.jpg') }}" alt="k-Means Clustering Example">
-            <h2>k-Means Clustering</h2>
-            <p>Visualize how k-means clustering groups similar data points together in a dataset.</p><br>
-            <a href="/kmeans-example" class="btn btn-primary">Try It</a>
-        </div>
+            <h2><i>k</i>-Means Clustering</h2>
+            <p>Visualise how <i>k</i>-Means clustering groups similar data points together in a dataset.</p>
+        </a>
     </section>
 
     <!-- Footer -->
