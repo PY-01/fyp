@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
 </head>
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">Machine Learning Made Visual (MLMV)</div>
         <div class="menu-toggle" id="mobile-menu">&#9776;</div>
@@ -35,35 +36,73 @@
         </ul>
     </nav>
 
-    <!-- Main Content Container with Flexbox -->
     <div class="content-container">
-    <h1><i>k</i>-Means Clustering Result</h1>
-        <div class="side-by-side-container">
-            <!-- Form Section -->
-            <form action="{{ url_for('kmeans.run_kmeans') }}" method="POST" class="input-form">
-                <label for="k_value">Number of Clusters (k):</label>
-                <input type="number" id="k_value" name="k_value" min="1" required>
-                <br>
-                <label for="cx">Initial Centroids X (comma-separated):</label>
-                <input type="text" id="cx" name="cx" required>
-                <br>
-                <label for="cy">Initial Centroids Y (comma-separated):</label>
-                <input type="text" id="cy" name="cy" required>
-                <br>
-                <button type="submit">Run</button>
-            </form>
+        <h1><i>k</i>-Means Clustering Animation</h1>
 
-            <!-- Animation or Error Section -->
-            <div class="result-container">
-                {% if animation_html %}
-                
-                <div class="animation-container">
-                    {{ animation_html | safe }}
-                </div>
-                {% elif error %}
-                <p class="error-message">{{ error }}</p>
-                {% endif %}
+        <div class="instructions-and-theory">
+            <!-- Basic Theory Section -->
+            <div class="knn-theory">
+                <p><strong>How <i>k</i>-Means Works</strong></p>
+                <ul>
+                    <li>Partition the data into <i>k</i> clusters based on similarity.</li>
+                    <li>Assign each data point to the nearest cluster centroid.</li>
+                    <li>Iteratively update the centroids based on the mean of points in each cluster.</li>
+                    <li>Stop when centroids stabilise or a maximum number of iterations is reached.</li>
+                </ul>
             </div>
+            <!-- Input Instructions -->
+            <div class="input-instructions">
+                <p><strong>Instructions</strong></p>
+                <p><b>Please enter your values in a comma-separated format.</b> For example, for x/y-coordinates, enter values like 1,2,3,4 and for initial centroid, use values like 0.5,2.5 for cx and cy.</p>
+                <p><b>Note:</b> Ensure there are no spaces between the values.</p>
+            </div>
+        </div>
+
+        <!-- Input Form -->
+        <form id="kmeansForm" class="input-form single-line-form">
+            <label for="x_data">x:</label>
+            <input type="text" id="x_data" name="x_data" required>
+
+            <label for="y_data">y:</label>
+            <input type="text" id="y_data" name="y_data" required>
+
+            <label for="k_value">k:</label>
+            <input type="number" id="k_value" name="k_value" min="1" required>
+
+            <label for="cx">Initial Centroids X:</label>
+            <input type="text" id="cx" name="cx" required>
+
+            <label for="cy">Initial Centroids Y:</label>
+            <input type="text" id="cy" name="cy" required>
+
+            <button type="reset">Reset</button>
+            <button type="button" id="submitForm">Run</button>
+        </form>
+
+        <!-- Results Section -->
+        <div class="result-container">
+            <h2>Result</h2>
+            <div id="resultMessage"></div>
+            <div class="animation-container" id="animationContainer"></div>
+        </div>
+        
+        <div class="interpretation">
+            <ul>
+                <li><p><strong>Centroids:</strong> The <i>k</i> centroids (marked as red stars) represent the center of each cluster. These are updated during each iteration of the algorithm based on the average of the points within each cluster.</p></li>
+                <li><p><strong>Cluster Assignment:</strong> Each data point is assigned to the nearest centroid based on distance. This creates distinct groups, which are colored differently.</p></li>
+                <li><p><strong>Iteration Process:</strong> The algorithm iteratively moves the centroids based on the mean position of the points assigned to them. This continues until the centroids stabilise.</p></li>
+                <li><p><strong>Convergence:</strong> The animation shows how the centroids evolve with each iteration. Once the centroids stop moving, the algorithm has converged, and the clusters are finalised.</p></li>
+                <li><p><b>Buttons and Animation Controls</b></p></li>
+                    <ul>
+                        <li><p><b>Play</b>: Start the Animation.</p></li>
+                        <li><p><b>Pause</b>: Stop the Animation.</p></li>
+                        <li><p><b>Step Forward/Backward</b>: Move frame by frame to analyse the decision-making process.</p></li>
+                        <li><p><b>Once</b>: The animation plays through a single time and stops.</p></li>
+                        <li><p><b>Loop</b>: The animation repeats continuously.</p></li>
+                        <li><p><b>Reflect</b>: The animation plays forward and then reverses back to the start.</p></li>
+                        <li><p><b>Speed Slider</b>: Adjusts the speed of the animation, allowing you to slow down or speed up the process.</p></li>
+                    </ul>
+            </ul>
         </div>
     </div>
 
@@ -71,11 +110,34 @@
         <p>© 2024 Loo Pei Yin. All rights reserved.</p>
     </footer>
 
+    <!-- JQuery and AJAX Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Hamburger menu toggle
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('nav-links');
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('show');
+        });
+        
+        // Handle form submission with AJAX
+        $('#submitForm').on('click', function () {
+            const formData = $('#kmeansForm').serialize();
+            $.ajax({
+                url: "{{ url_for('kmeans.index') }}", 
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.animation_html) {
+                        $('#animationContainer').html(response.animation_html);
+                    } else if (response.error) {
+                        alert(response.error); 
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while processing the request.');
+                }
+            });
         });
     </script>
 </body>
