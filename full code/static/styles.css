@@ -353,24 +353,28 @@ a:hover, a:focus {
     padding: 20px;
 }
 
-.explore-section h1 {
-    margin-top: 80px;
+.explore-section >h1 {
+    margin-top: 60px;
+    font-size: 2rem;
 }
 
 .explore-section .example-card {
     background-color: white;
-    width: 300px;
+    width: 500px;
     margin: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
     text-align: center;
-    padding: 15px;
+    padding: 20px;
+    position: relative;
     color: black;
+    text-decoration: none; /* Remove underline on hover */
 }
 
 .explore-section .example-card img {
-    width: 100%; /* Adjust to fit card width */
-    height: 300px;
+    width: 500px; /* Adjust size as needed */
+    height: 500px;
     object-fit: cover; /* Maintain aspect ratio */
 }
 
@@ -380,13 +384,16 @@ a:hover, a:focus {
     margin-bottom: 10px;
 }
 
-.explore-section .btn {
-    background-color: #6A0DAD;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    display: inline-block;
+.explore-section .example-card p {
+    font-size: 1.5rem;
+}
+
+/* Hover effect for the card */
+.explore-section .example-card:hover {
+    transform: translateY(-10px); /* Make the card float up */
+    box-shadow: 0px 8px 16px rgba(255, 255, 255, 0.8);
+    background-color: #f0f0f0; /* Change background color on hover */
+    color: #333; /* Adjust text color if needed */
 }
 
 /* Theory Section */
@@ -478,4 +485,17 @@ a:hover, a:focus {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow */
     border-radius: 8px; /* Optional: rounds the corners */
 }
+
+.knn_example .btn {
+    background-color: #6A0DAD;
+    margin-top:20px;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
+}
+
 
