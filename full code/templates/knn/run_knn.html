@@ -59,28 +59,31 @@
         <!-- Input Instructions -->
         <div class="input-instructions">
             <p><strong>Instructions</strong></p>
-            <p><b>Please enter your values in a comma-separated format.</b> For example, for x/y-coordinates, enter values like 1,2,3,4, and for Input Classes, use values like 0,1,1,0 where each number represents a class label.</p>
+            <p><b>Please enter your values in a comma-separated format.</b></p>
             <p><b>Note:</b> Ensure there are no spaces between the values.</p>
-            <p><b>Tip:</b> You can also input multiple <i>k</i> values to perform comparisons. Enter 1-4 values, separated by commas. For example: 3,5,7.</p>
+            <p><b>Tip:</b> You can also input multiple <i>k</i> values to perform comparisons. Enter 1-4 values, separated by commas.</p>
         </div>
     </div>
 
     <!-- Single-line input form -->
     <form id="knnForm" class="input-form single-line-form">
         <label for="x_data">x:</label>
-        <input type="text" id="x_data" name="x_data" required>
+        <input type="text" id="x_data" name="x_data" required 
+        value="4,5,10,4,3,11,14,8,10,12,10,9,12,11,10,7,7,7,13,6,12,5,9,5,14,9">
 
         <label for="y_data">y:</label>
-        <input type="text" id="y_data" name="y_data" required>
+        <input type="text" id="y_data" name="y_data" required 
+        value="21,19,24,17,16,25,24,22,21,21,18,18,16,17,20,17,24,20,19,22,22,24,23,23,17,19">
 
         <label for="classes">Classes:</label>
-        <input type="text" id="classes" name="classes" required>
+        <input type="text" id="classes" name="classes" required 
+        value="0,0,1,0,0,1,1,0,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,0,1,1">
 
         <label for="new_x">New x:</label>
-        <input type="number" id="new_x" name="new_x" required step="1">
+        <input type="number" id="new_x" name="new_x" required step="1"  value="8.2">
 
         <label for="new_y">New y:</label>
-        <input type="number" id="new_y" name="new_y" required step="1">
+        <input type="number" id="new_y" name="new_y" required step="1" value="20">
 
         <label for="k_value">k (1-4):</label>
         <input type="text" id="k_value" name="k_values" required pattern="^([1-9]\d*)(,([1-9]\d*)){0,3}$">
@@ -89,6 +92,19 @@
         <button type="button" id="submitForm">Run</button>
     </form>
 
+     <!-- Frame control buttons -->
+    <div class="frameControls">
+        <button type="button" id="frame1Btn">Explain 1st Frame</button>
+        <button type="button" id="frame2Btn">Show k Nearest Points</button>
+        <button type="button" id="frame3Btn">Show Distances</button>
+        <button type="button" id="frame4Btn">Highlight Majority Class</button>
+        <button type="button" id="frame5Btn">Circle Majority Class</button>
+        <button type="button" id="frame6Btn">Change Test Data Color</button>
+    </div>
+
+    <div id="frameDescription"></div>
+
+    <div id="errorMessage" style="color:red; display:none;"></div>
     <div class="result-container">
         <h2>Result</h2>
         <div class="animation-container" id="animationContainer"></div>
@@ -147,6 +163,73 @@
                 }
             });
         });
+
+        document.getElementById('knnForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const response = await fetch("/", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            const errorDiv = document.getElementById('errorMessage');
+            const animationContainer = document.getElementById('animationContainer');
+
+            if (response.status === 200) {
+                errorDiv.style.display = 'none';
+                animationContainer.innerHTML = data.animation_html;
+            } else {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = data.error;  // Show the specific error message
+                animationContainer.innerHTML = '';  // Clear animation container
+            }
+        };
+
+        // Frame descriptions mapping
+        const frameDescriptions = {
+            frame1Btn: "Frame 1: Explains the initial setup and the dataset visualization.",
+            frame2Btn: "Frame 2: Highlights the k nearest points to the new data point.",
+            frame3Btn: "Frame 3: Displays the distances to the k nearest neighbors.",
+            frame4Btn: "Frame 4: Highlights the majority class among the k neighbors.",
+            frame5Btn: "Frame 5: Draws a circle around the majority class.",
+            frame6Btn: "Frame 6: Changes the test data point to the predicted class's color."
+        };
+
+        // Function to show description and move to the next frame
+        function handleFrameAction(buttonId, frameNumber) {
+            // Update the frame description
+            const frameDescriptionDiv = document.getElementById('frameDescription');
+            frameDescriptionDiv.textContent = frameDescriptions[buttonId];
+
+            // Trigger the animation frame logic
+            // This assumes you have a function `goToFrame(frameNumber)` in your animation logic
+            goToFrame(frameNumber); 
+        }
+
+        // Add event listeners to frame buttons
+        document.getElementById('frame1Btn').addEventListener('click', () => handleFrameAction('frame1Btn', 1));
+        document.getElementById('frame2Btn').addEventListener('click', () => handleFrameAction('frame2Btn', 2));
+        document.getElementById('frame3Btn').addEventListener('click', () => handleFrameAction('frame3Btn', 3));
+        document.getElementById('frame4Btn').addEventListener('click', () => handleFrameAction('frame4Btn', 4));
+        document.getElementById('frame5Btn').addEventListener('click', () => handleFrameAction('frame5Btn', 5));
+        document.getElementById('frame6Btn').addEventListener('click', () => handleFrameAction('frame6Btn', 6));
+
+        // Example of the `goToFrame` function
+        function goToFrame(frameNumber) {
+            // Example implementation: Hide all frames and show the target frame
+            const frames = document.querySelectorAll('.animation-frame');
+            frames.forEach(frame => frame.style.display = 'none');
+
+            // Show the specific frame
+            const targetFrame = document.querySelector(`#frame${frameNumber}`);
+            if (targetFrame) {
+                targetFrame.style.display = 'block';
+            } else {
+                console.error(`Frame ${frameNumber} not found!`);
+            }
+        }
     </script>
 </body>
 </html>
