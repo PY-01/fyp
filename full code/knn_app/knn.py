@@ -61,10 +61,26 @@ def animate(frame, axs, dataSet, k_values, new_x, new_y, dotted_lines, k_nearest
                 distance_texts[subplot_index][i].set_position((mid_x, mid_y))
         elif frame == 4:
             nearest_labels = [classes[sorted_indices[j]] for j in range(k)]
-            majority_label = max(set(nearest_labels), key=nearest_labels.count)
+            
+            # Count occurrences of each class
+            label_counts = {label: nearest_labels.count(label) for label in set(nearest_labels)}
+            
+            # Find the classes with the maximum count (possible ties)
+            max_count = max(label_counts.values())
+            tied_classes = [label for label, count in label_counts.items() if count == max_count]
+            
+            if len(tied_classes) > 1:
+                # Resolve tie by choosing the class with the smallest total distance
+                total_distances = {label: sum(sorted_distances[i] for i in range(k) if classes[sorted_indices[i]] == label) 
+                                   for label in tied_classes}
+                majority_label = min(total_distances, key=total_distances.get)
+            else:
+                # No tie, just select the class with the highest count
+                majority_label = tied_classes[0]
+
+            # Highlight the k-nearest points and their distances
             for i in range(k):
                 line = k_nearest_lines[subplot_index][i]
-                # Lines already active, no need to reset them
                 mid_x = (sorted_x[i] + new_x) / 2
                 mid_y = (sorted_y[i] + new_y) / 2
                 if classes[sorted_indices[i]] == majority_label:
@@ -77,8 +93,27 @@ def animate(frame, axs, dataSet, k_values, new_x, new_y, dotted_lines, k_nearest
             # Clear the distance text but keep the k-nearest lines
             for text in distance_texts[subplot_index]:
                 text.set_text('')  # Clear distance text
+
+            # Determine the majority label using the same logic as frame 4
             nearest_labels = [classes[sorted_indices[j]] for j in range(k)]
-            majority_label = max(set(nearest_labels), key=nearest_labels.count)
+
+            # Count occurrences of each class
+            label_counts = {label: nearest_labels.count(label) for label in set(nearest_labels)}
+
+            # Find the classes with the maximum count (possible ties)
+            max_count = max(label_counts.values())
+            tied_classes = [label for label, count in label_counts.items() if count == max_count]
+
+            if len(tied_classes) > 1:
+                # Resolve tie by choosing the class with the smallest total distance
+                total_distances = {label: sum(sorted_distances[i] for i in range(k) if classes[sorted_indices[i]] == label)
+                                   for label in tied_classes}
+                majority_label = min(total_distances, key=total_distances.get)
+            else:
+                # No tie, just select the class with the highest count
+                majority_label = tied_classes[0]
+
+            # Highlight points belonging to the majority label
             majority_points = dataSet[sorted_indices[:k]][np.array(nearest_labels) == majority_label]
             ax.scatter(majority_points[:, 0], majority_points[:, 1], edgecolors='black', facecolors='none', s=400, label='Majority')
         elif frame == 6:
@@ -88,8 +123,26 @@ def animate(frame, axs, dataSet, k_values, new_x, new_y, dotted_lines, k_nearest
             for text in distance_texts[subplot_index]:
                 text.set_text('')  # Clear any distance text
 
+            # Determine the majority label using the same logic as frame 4
             nearest_labels = [classes[sorted_indices[j]] for j in range(k)]
-            majority_label = max(set(nearest_labels), key=nearest_labels.count)
+
+            # Count occurrences of each class
+            label_counts = {label: nearest_labels.count(label) for label in set(nearest_labels)}
+
+            # Find the classes with the maximum count (possible ties)
+            max_count = max(label_counts.values())
+            tied_classes = [label for label, count in label_counts.items() if count == max_count]
+
+            if len(tied_classes) > 1:
+                # Resolve tie by choosing the class with the smallest total distance
+                total_distances = {label: sum(sorted_distances[i] for i in range(k) if classes[sorted_indices[i]] == label)
+                                   for label in tied_classes}
+                majority_label = min(total_distances, key=total_distances.get)
+            else:
+                # No tie, just select the class with the highest count
+                majority_label = tied_classes[0]
+
+            # Update new point color based on majority label
             new_point_color = 'purple' if majority_label == 0 else 'orange'
             new_point_scatter_list[subplot_index].set_color(new_point_color)
 
@@ -98,16 +151,14 @@ def animate(frame, axs, dataSet, k_values, new_x, new_y, dotted_lines, k_nearest
 
     return [line for sublist in dotted_lines + k_nearest_lines for line in sublist] + [text for sublist in distance_texts for text in sublist]
 
+# Validate k values
 def validate_k_values(k_values, n_points):
-    """
-    Validates and limits the range of k values.
-    Ensures that 0 < k <= sqrt(n_points).
-    """
     max_k = int(np.sqrt(n_points))  # Maximum k is the square root of the number of points
-    valid_k_values = [k for k in k_values if 0 < k <= max_k]
-    if not valid_k_values:
-        raise ValueError(f"No valid k values provided. Ensure k > 0 and k <= {max_k}.")
-    return valid_k_values
+    if any(k > max_k for k in k_values):
+        raise ValueError(f"Invalid k value! Maximum allowed k for the current dataset is {max_k}.")
+    if not all(k > 0 for k in k_values):
+        raise ValueError("k values must be greater than 0.")
+    return k_values
 
 def perform_knn_animation_html(x, y, classes, new_x, new_y, k_values, show_grid=True):
     if len(k_values) > 4:
