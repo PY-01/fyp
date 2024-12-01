@@ -53,7 +53,7 @@
             <!-- Input Instructions -->
             <div class="input-instructions">
                 <p><strong>Instructions</strong></p>
-                <p><b>Please enter your values in a comma-separated format.</b> For example, for x/y-coordinates, enter values like 1,2,3,4 and for initial centroid, use values like 0.5,2.5 for cx and cy.</p>
+                <p><b>Please enter your values in a comma-separated format.</b></p>
                 <p><b>Note:</b> Ensure there are no spaces between the values.</p>
             </div>
         </div>
@@ -66,7 +66,7 @@
             <label for="y_data">y:</label>
             <input type="text" id="y_data" name="y_data" required>
 
-            <label for="k_value">k:</label>
+            <label for="k_value"><i>k</i>:</label>
             <input type="number" id="k_value" name="k_value" min="1" required>
 
             <label for="cx">Initial Centroids X:</label>
@@ -104,6 +104,13 @@
                     </ul>
             </ul>
         </div>
+    </div>
+
+    <!-- Button to Link to run_kmeansPP.html -->
+    <div class="button-container">
+        <a href="{{ url_for('kmeansPP.index') }}">
+            <button type="button" class="btn-kmeansPP">Go to <i>k</i>-Means++</button>
+        </a>
     </div>
 
     <footer class="footer">
