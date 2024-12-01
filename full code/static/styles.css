@@ -324,14 +324,16 @@ a:hover, a:focus {
 }
 
 .guides-section .btn {
+    padding: 10px 15px;
+    margin: 0 5px;
     background-color: #6A0DAD;
     color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    display: inline-block;
-    font-size: 1.5rem;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .guides-section .btn:hover {
@@ -498,4 +500,63 @@ a:hover, a:focus {
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
 }
 
+.btn-kmeansPP {
+    margin-left:20px;
+    background-color: #6A0DAD;
+    margin-top:20px;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
+}
 
+.btn-kmeansPP:hover {
+    background-color: #8B5EDC; /* Lighter shade on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow for a lifted effect */
+}
+
+.btn-kmeansPP:active {
+    transform: scale(0.98); /* Slightly reduce size on click for a pressed effect */
+}
+
+.frameControls {
+    display: flex; /* Align buttons horizontally */
+    flex-wrap: wrap; /* Allow wrapping to the next row if necessary */
+    gap: 10px; /* Space between buttons */
+    justify-content: center; /* Center buttons within the container */
+    margin-top: 20px;
+}
+
+.frameControls button {
+    padding: 10px 15px;
+    margin: 0 5px;
+    background-color: #6A0DAD;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Add hover effect transitions */
+}
+
+.frameControls button:hover {
+    background-color: #8B5EDC; /* Lighter shade on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Slightly enlarge button on hover */
+}
+
+.frameControls button:active {
+    transform: scale(0.98); /* Slightly shrink button when clicked */
+}
+
+#frameDescription {
+    color:#ffc107;
+    margin-top:15px;
+    text-align:center;
+    font-size:1.25rem;
+}
