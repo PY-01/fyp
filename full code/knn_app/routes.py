@@ -26,8 +26,19 @@ def index():
 
             # Return JSON response
             return jsonify({"animation_html": animation_html})
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400  # Send specific error message
         except Exception as e:
-            return jsonify({"error": str(e)}), 400
+            return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
     # Render the initial form on GET request
     return render_template('run_knn.html')
+
+@bp.route('/knn/set_frame', methods=['POST'])
+def set_frame():
+    animation_id = request.form.get('animationId')
+    frame = int(request.form.get('frame'))
+    # Update the animation to the specified frame
+    # Generate updated HTML or a new image
+    return jsonify({"success": True, "animation_html": updated_html})
+
