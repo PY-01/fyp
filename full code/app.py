@@ -2,7 +2,8 @@ from flask import Flask, render_template
 from knn_app.routes import bp as knn_bp  # Blueprint for knn_app
 from kmeans_app.routes import bp as kmeans_bp  # Blueprint for kmeans_app
 from knn_example.routes import bp as knn_example_bp  # Blueprint for knn_example
-from kmeans_example.routes import bp as kmeans_example_bp
+from kmeans_example.routes import bp as kmeans_example_bp# Blueprint for kmeans_example
+from kmeansPP.routes import bp as kmeansPP_bp# Blueprint for kmeansPP
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Needed for session management
@@ -10,6 +11,7 @@ app.secret_key = 'supersecretkey'  # Needed for session management
 # Register blueprints
 app.register_blueprint(knn_bp, url_prefix='/knn')
 app.register_blueprint(kmeans_bp, url_prefix='/kmeans')
+app.register_blueprint(kmeansPP_bp, url_prefix='/kmeansPP')
 app.register_blueprint(knn_example_bp, url_prefix='/knn_example')
 app.register_blueprint(kmeans_example_bp, url_prefix='/kmeans_example')
 
