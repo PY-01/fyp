@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k-means++ Results</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <!-- Link to the styles.css file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776;
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content-container">
+        <h1><i>k</i>-means++ Animation</h1>
+
+        <!-- Instructions Section -->
+        <div class="instructions-and-theory">
+            <div class="kmeans-theory">
+                <p><strong>How <i>k</i>-means++ Works</strong></p>
+                <ul>
+                    <li><i>k</i>-means++ is an improved version of the classic <i>k</i>-means algorithm for initialising centroids.</li>
+                    <li>The goal is to place the initial centroids in a way that they are as far apart as possible, reducing the chances of poor clustering results.</li>
+                    <li>This helps in speeding up convergence and achieving better results compared to random initialisation.</li>
+                </ul>
+            </div>
+
+            <div class="input-instructions">
+                <p><strong>Instructions</strong></p>
+                <p><b>Please enter your x and y coordinates as comma-separated values and specify the number of clusters.</b></p>
+            </div>
+        </div>
+
+        <!-- Input Form for k-means++ -->
+        <form id="kmeansForm" class="input-form single-line-form">
+            <label for="x_data">x (comma-separated):</label>
+            <input type="text" id="x_data" name="x_data" required>
+
+            <label for="y_data">y (comma-separated):</label>
+            <input type="text" id="y_data" name="y_data" required>
+
+            <label for="k_value">Number of Clusters (<i>k</i>):</label>
+            <input type="number" id="k_value" name="k_value" required min="2" max="6">
+
+            <button type="reset">Reset</button>
+            <button type="button" id="submitForm">Run</button>
+        </form>
+
+        <div id="errorMessage" style="color:red; display:none;"></div>
+        
+        <div class="result-container">
+            <h2>Result</h2>
+            <div class="animation-container" id="animationContainer"></div>
+        </div>
+
+        <div class="interpretation">
+            <ul>
+                <li><p>Dotted lines: Connect the centroids to other points in the dataset, representing the distances between them.</p></li>
+                <li><p>Thicker lines: Highlight the points closest to the centroids.</p></li>
+                <li><p><b>Buttons and Animation Controls</b></p></li>
+                <ul>
+                    <li><p><b>Play</b>: Start the Animation.</p></li>
+                    <li><p><b>Pause</b>: Stop the Animation.</p></li>
+                    <li><p><b>Step Forward/Backward</b>: Move frame by frame to analyse the decision-making process.</p></li>
+                    <li><p><b>Once</b>: The animation plays through a single time and stops.</p></li>
+                    <li><p><b>Loop</b>: The animation repeats continuously.</p></li>
+                    <li><p><b>Reflect</b>: The animation plays forward and then reverses back to the start.</p></li>
+                    <li><p><b>Speed Slider</b>: Adjusts the speed of the animation, allowing you to slow down or speed up the process.</p></li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+    
+    <!-- JQuery and AJAX Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        // Handle form submission with AJAX
+        $('#submitForm').on('click', function () {
+            const formData = $('#kmeansForm').serialize();
+            $.ajax({
+                url: "{{ url_for('kmeansPP.index') }}",  // Replace with your k-means endpoint
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.animation_html) {
+                        $('#animationContainer').html(response.animation_html);
+                    } else if (response.error) {
+                        alert(response.error);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while processing the request.');
+                }
+            });
+        });
+
+        document.getElementById('kmeansForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const response = await fetch("/", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            const errorDiv = document.getElementById('errorMessage');
+            const animationContainer = document.getElementById('animationContainer');
+
+            if (response.status === 200) {
+                errorDiv.style.display = 'none';
+                animationContainer.innerHTML = data.animation_html;
+            } else {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = data.error;  // Show the specific error message
+                animationContainer.innerHTML = '';  // Clear animation container
+            }
+        };
+    </script>
+</body>
+</html>
