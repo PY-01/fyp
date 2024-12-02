@@ -53,19 +53,20 @@ def perform_kmeans(x, y, cx, cy, k, frames_per_move=5, max_iterations=100, toler
 
     # Step 1: Initially plot all points in gray
     cluster_indices = [-1] * len(x)  # Initialize as unassigned
-    frames.append((cx.copy(), cy.copy(), cluster_indices, -1))
+    frames.append((cx.copy(), cy.copy(), cluster_indices, -1, [-1] * k))
 
-    # Step 2: Assign each point to a cluster based on the initial centroids
-    for i in range(len(x)):
-        distances = np.sqrt((x[i] - cx) ** 2 + (y[i] - cy) ** 2)
-        cluster_index = np.argmin(distances)
-        cluster_indices[i] = cluster_index
-        frames.append((cx.copy(), cy.copy(), cluster_indices.copy(), -1))
+    # Step 2: Assign all points to their nearest cluster based on the initial centroids
+    clusters, cluster_indices = assign_clusters(x, y, cx, cy, k)
+
+    # Add frames for visualizing each cluster one by one
+    highlight_mask = [-1] * k  # Initially, no cluster is highlighted
+    for cluster_index in range(k):
+        highlight_mask[cluster_index] = cluster_index  # Highlight the current cluster
+        temp_indices = cluster_indices.copy()
+        frames.append((cx.copy(), cy.copy(), temp_indices, 0, highlight_mask.copy()))
 
     # Step 3: Proceed with the usual K-means iterations
-    clusters, cluster_indices = assign_clusters(x, y, cx, cy, k)
     iteration = 0
-
     while iteration < max_iterations:
         new_cx, new_cy = update_centroids(clusters)
 
@@ -83,21 +84,21 @@ def perform_kmeans(x, y, cx, cy, k, frames_per_move=5, max_iterations=100, toler
         for t in np.linspace(0, 1, frames_per_move):
             interpolated_cx = cx + t * (new_cx - cx)
             interpolated_cy = cy + t * (new_cy - cy)
-            frames.append((interpolated_cx, interpolated_cy, cluster_indices.copy(), iteration))
+            frames.append((interpolated_cx, interpolated_cy, cluster_indices.copy(), iteration, highlight_mask.copy()))
 
-        # Update centroids and reassign clusters
+        # Update centroids and reassign clusters in one step
         cx, cy = new_cx, new_cy
         clusters, cluster_indices = assign_clusters(x, y, cx, cy, k)
-        frames.append((cx.copy(), cy.copy(), cluster_indices.copy(), iteration + 1))
+        frames.append((cx.copy(), cy.copy(), cluster_indices.copy(), iteration + 1, highlight_mask.copy()))
         iteration += 1
 
     # Update function for animation
     def update(frame_index):
-        current_cx, current_cy, current_indices, current_iteration = frames[frame_index]
-        
+        current_cx, current_cy, current_indices, current_iteration, current_highlight = frames[frame_index]
+
         # Clear previous plot and setup
         ax.clear()
-    
+
         # Set limits and labels
         ax.set_xlim(min_x, max_x)
         ax.set_ylim(min_y, max_y)
@@ -107,21 +108,24 @@ def perform_kmeans(x, y, cx, cy, k, frames_per_move=5, max_iterations=100, toler
         ax.set_title(title)
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
-        
+
         # Plot centroids first so they appear in front of the grid
         ax.scatter(current_cx, current_cy, marker="*", s=100, c='red', label='Centroids', zorder=5)
-        
+
         # Plot data points with their respective cluster colors or gray
         for i, (xi, yi) in enumerate(zip(x, y)):
-            if current_indices[i] == -1:  # Unassigned points
+            cluster_index = current_indices[i]
+            if cluster_index == -1:  # Unassigned points
                 ax.scatter(xi, yi, c='gray', marker='o', s=30, alpha=0.5, zorder=4)
             else:
-                cluster_index = current_indices[i]
-                ax.scatter(xi, yi, c=colors[cluster_index % len(colors)], marker=markers[cluster_index % len(markers)], s=30, alpha=0.5, zorder=4)
-    
+                color = colors[cluster_index % len(colors)]
+                if current_highlight[cluster_index] == -1:
+                    color = 'gray'  # De-emphasize other clusters
+                ax.scatter(xi, yi, c=color, marker=markers[cluster_index % len(markers)], s=30, alpha=0.5, zorder=4)
+
         # Set the grid style and make the grid lines dashed (set lower zorder to place behind the points)
         ax.grid(True, linestyle='--', zorder=1)  # Set grid's zorder to be the lowest to place it behind everything else
-        
+
         # Add legend after the points to ensure it's placed correctly
         ax.legend(loc='best')
 
