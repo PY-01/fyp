@@ -53,7 +53,7 @@ def perform_kmeans(x, y, cx, cy, k, frames_per_move=5, max_iterations=100, toler
 
     # Step 1: Initially plot all points in gray
     cluster_indices = [-1] * len(x)  # Initialize as unassigned
-    frames.append((cx.copy(), cy.copy(), cluster_indices, -1, [-1] * k))
+    frames.append((cx.copy(), cy.copy(), cluster_indices, -1, [-1] * k, None))
 
     # Step 2: Assign all points to their nearest cluster based on the initial centroids
     clusters, cluster_indices = assign_clusters(x, y, cx, cy, k)
@@ -63,7 +63,7 @@ def perform_kmeans(x, y, cx, cy, k, frames_per_move=5, max_iterations=100, toler
     for cluster_index in range(k):
         highlight_mask[cluster_index] = cluster_index  # Highlight the current cluster
         temp_indices = cluster_indices.copy()
-        frames.append((cx.copy(), cy.copy(), temp_indices, 0, highlight_mask.copy()))
+        frames.append((cx.copy(), cy.copy(), temp_indices, 0, highlight_mask.copy(), None))
 
     # Step 3: Proceed with the usual K-means iterations
     iteration = 0
@@ -80,21 +80,24 @@ def perform_kmeans(x, y, cx, cy, k, frames_per_move=5, max_iterations=100, toler
         if np.all(centroid_shift < tolerance):
             break
 
+        # Frame showing new centroids and lines connecting old and new centroids
+        frames.append((cx.copy(), cy.copy(), cluster_indices.copy(), iteration, highlight_mask.copy(), (new_cx, new_cy)))
+
         # Add interpolated frames to show centroid movement
         for t in np.linspace(0, 1, frames_per_move):
             interpolated_cx = cx + t * (new_cx - cx)
             interpolated_cy = cy + t * (new_cy - cy)
-            frames.append((interpolated_cx, interpolated_cy, cluster_indices.copy(), iteration, highlight_mask.copy()))
+            frames.append((interpolated_cx, interpolated_cy, cluster_indices.copy(), iteration, highlight_mask.copy(), None))
 
         # Update centroids and reassign clusters in one step
         cx, cy = new_cx, new_cy
         clusters, cluster_indices = assign_clusters(x, y, cx, cy, k)
-        frames.append((cx.copy(), cy.copy(), cluster_indices.copy(), iteration + 1, highlight_mask.copy()))
+        frames.append((cx.copy(), cy.copy(), cluster_indices.copy(), iteration + 1, highlight_mask.copy(), None))
         iteration += 1
 
     # Update function for animation
     def update(frame_index):
-        current_cx, current_cy, current_indices, current_iteration, current_highlight = frames[frame_index]
+        current_cx, current_cy, current_indices, current_iteration, current_highlight, next_centroids = frames[frame_index]
 
         # Clear previous plot and setup
         ax.clear()
@@ -109,9 +112,6 @@ def perform_kmeans(x, y, cx, cy, k, frames_per_move=5, max_iterations=100, toler
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
 
-        # Plot centroids first so they appear in front of the grid
-        ax.scatter(current_cx, current_cy, marker="*", s=100, c='red', label='Centroids', zorder=5)
-
         # Plot data points with their respective cluster colors or gray
         for i, (xi, yi) in enumerate(zip(x, y)):
             cluster_index = current_indices[i]
@@ -123,13 +123,27 @@ def perform_kmeans(x, y, cx, cy, k, frames_per_move=5, max_iterations=100, toler
                     color = 'gray'  # De-emphasize other clusters
                 ax.scatter(xi, yi, c=color, marker=markers[cluster_index % len(markers)], s=30, alpha=0.5, zorder=4)
 
+        # Plot centroids with colors corresponding to their clusters
+        for centroid_index, (cxi, cyi) in enumerate(zip(current_cx, current_cy)):
+            if np.isnan(cxi) or np.isnan(cyi):
+                continue  # Skip plotting for uninitialized centroids
+            centroid_color = colors[centroid_index % len(colors)]
+            if current_highlight[centroid_index] == -1:
+                centroid_color = 'gray'  # De-emphasize if not highlighted
+            ax.scatter(cxi, cyi, marker="*", s=100, c=centroid_color, zorder=5)
+
+        # If next centroids are provided, draw them and connect with lines
+        if next_centroids:
+            next_cx, next_cy = next_centroids
+            for old_cx, old_cy, new_cx, new_cy in zip(current_cx, current_cy, next_cx, next_cy):
+                ax.scatter(new_cx, new_cy, marker="*", s=100, c='red', zorder=6)
+                ax.plot([old_cx, new_cx], [old_cy, new_cy], linestyle='--', color='black', zorder=2)
+
         # Set the grid style and make the grid lines dashed (set lower zorder to place behind the points)
         ax.grid(True, linestyle='--', zorder=1)  # Set grid's zorder to be the lowest to place it behind everything else
-
-        # Add legend after the points to ensure it's placed correctly
-        ax.legend(loc='best')
 
     ani = FuncAnimation(fig, update, frames=len(frames), interval=200, repeat=False)
     html_str = ani.to_jshtml()
     plt.close(fig)
     return html_str
+
