@@ -1,0 +1,98 @@
+from flask import Flask, Blueprint, render_template, request, session, jsonify
+from flask_session import Session
+from .knn import perform_knn_animation_html
+
+app = Flask(__name__)
+
+# Set session to use server-side storage
+app.config['SESSION_TYPE'] = 'filesystem'  # or 'redis' for more scalable storage
+app.config['SESSION_PERMANENT'] = False
+app.secret_key = 'your_secret_key'
+
+# Initialize Flask-Session with the app instance
+Session(app)
+
+# Define blueprint for knn
+bp = Blueprint('knn', __name__, template_folder='../templates/knn')
+
+# Route to clear session data
+@bp.route('/clear_session')
+def clear_session():
+    session.clear()  # Clears all session data
+    return 'Session cleared'
+
+# Route for the main page
+@bp.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        try:
+            # Parse input data
+            x_data = request.form.get('x_data')
+            y_data = request.form.get('y_data')
+            classes = request.form.get('classes')
+            new_x = float(request.form.get('new_x'))
+            new_y = float(request.form.get('new_y'))
+            k_values = request.form.get('k_values')
+
+            # Convert input strings to lists
+            x = list(map(float, x_data.split(',')))
+            y = list(map(float, y_data.split(',')))
+            class_list = list(map(int, classes.split(',')))
+            k_list = [int(k.strip()) for k in k_values.split(',') if k.strip().isdigit()]
+
+            # Perform k-NN animation
+            animation_html = perform_knn_animation_html(x, y, class_list, new_x, new_y, k_list)
+
+            # Store animation state in the session
+            session['frames_count'] = len(animation_html)  # Assuming 'animation_html' has multiple frames
+            session['current_frame'] = 0  # Start from the first frame
+
+            # Store the essential animation data
+            session['animation_data'] = {"x": x, "y": y, "classes": class_list, "new_x": new_x, "new_y": new_y, "k_values": k_list}
+
+            # Return the animation HTML in a JSON response
+            return jsonify({"animation_html": animation_html})
+
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400
+        except Exception as e:
+            return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+
+    # Render the form on GET request
+    return render_template('run_knn.html')
+
+# Route to set the current frame
+@bp.route('/knn/set_frame', methods=['POST'])
+def set_frame():
+    try:
+        # Get animation state from session
+        animation_data = session.get('animation_data')
+        if not animation_data:
+            return jsonify({"error": "Animation not generated yet"}), 400
+
+        # Get the requested frame from the form
+        frame = int(request.form.get('frame'))
+
+        # Validate frame range
+        if frame < 0 or frame >= session.get('frames_count', 6):
+            return jsonify({"error": "Invalid frame number"}), 400
+
+        # Update the current frame in session
+        session['current_frame'] = frame
+
+        # Generate the updated animation HTML based on the selected frame
+        animation_html = perform_knn_animation_html(
+            animation_data['x'],
+            animation_data['y'],
+            animation_data['classes'],
+            animation_data['new_x'],
+            animation_data['new_y'],
+            animation_data['k_values'],
+            frame=frame
+        )
+
+        # Return updated animation HTML
+        return jsonify({"success": True, "animation_html": animation_html})
+
+    except Exception as e:
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
