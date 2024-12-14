@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k-NN Results</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <!-- Link to the styles.css file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776;
+        </div>   
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <div class="content-container">
+    <h1><i>k</i>-Nearest Neighbours (<i>k</i>-NN) Animation</h1>
+    <div class="instructions-and-theory">
+        <!-- Basic Theory Section -->
+        <div class="knn-theory">
+            <p><strong>How <i>k</i>-NN Works</strong></p>
+            <ul>
+                <li>It identifies the <i>k</i> nearest neighbours to a new data point.</li>
+                <li>The majority class of these neighbours determines the classification.</li>
+                <li>The distance metric determines how the closeness of points is measured, with Euclidean distance being the most common choice for its simplicity and geometric relevance.</li>
+                <li>Picking the right k value is important because a small k can focus too much on noise, while a large k might miss important local details.</li>
+            </ul>
+        </div>
+        <!-- Input Instructions -->
+        <div class="input-instructions">
+            <p><strong>Instructions</strong></p>
+            <p><b>Please enter your values in a comma-separated format.</b></p>
+            <p><b>Note:</b> Ensure there are no spaces between the values.</p>
+            <p><b>Tip:</b> You can also input multiple <i>k</i> values to perform comparisons. Enter 1-4 values, separated by commas.</p>
+        </div>
+    </div>
+    <!-- Single-line input form -->
+    <form id="knnForm" class="input-form single-line-form">
+        <label for="x_data">x:</label>
+        <input type="text" id="x_data" name="x_data" required 
+        value="4,5,10,4,3,11,14,8,10,12,10,9,12,11,10,7,7,7,13,6,12,5,9,5,14,9">
+
+        <label for="y_data">y:</label>
+        <input type="text" id="y_data" name="y_data" required 
+        value="21,19,24,17,16,25,24,22,21,21,18,18,16,17,20,17,24,20,19,22,22,24,23,23,17,19">
+
+        <label for="classes">Classes:</label>
+        <input type="text" id="classes" name="classes" required 
+        value="0,0,1,0,0,1,1,0,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,0,1,1">
+
+        <label for="new_x">New x:</label>
+        <input type="number" id="new_x" name="new_x" required step="1"  value="8.2">
+
+        <label for="new_y">New y:</label>
+        <input type="number" id="new_y" name="new_y" required step="1" value="20">
+
+        <label for="k_value">k (1-4):</label>
+        <input type="text" id="k_value" name="k_values" required pattern="^([1-9]\d*)(,([1-9]\d*)){0,3}$">
+
+        <button type="reset">Reset</button>
+        <button type="submit" id="submitForm">Run</button>
+    </form>
+     <!-- Frame control buttons -->
+    <div class="frameControls">
+        <button type="button" class="frame-btn" id="frame1Btn" data-frame="1">Explain 1st Frame</button>
+        <button type="button" class="frame-btn" id="frame2Btn" data-frame="2">Show k Nearest Points</button>
+        <button type="button" class="frame-btn" id="frame3Btn" data-frame="3">Show Distances</button>
+        <button type="button" class="frame-btn" id="frame4Btn" data-frame="4">Highlight Majority Class</button>
+        <button type="button" class="frame-btn" id="frame5Btn" data-frame="5">Circle Majority Class</button>
+        <button type="button" class="frame-btn" id="frame6Btn" data-frame="6">Change Test Data Color</button>
+    </div>
+    <div id="frameDescription"></div>
+    <div id="errorMessage" style="color:red; display:none;"></div>
+    <div class="result-container">
+        <h2>Result</h2>
+        <div class="animation-container" id="animationContainer"></div>
+    </div>
+    <div class="interpretation">
+        <ul>
+            <li><p>Dotted lines: Connect the new point (red star) to all other points in the dataset, representing the distances between them.</p></li>
+            <li><p>Thicker lines: Highlights the <i>k</i> nearest distance.</p></li>
+            <li><p>Distinct Class: Class 0 represented by purple diamond-shaped points and Class 1 by orange triangular points.</p></li>
+            <li><p>Test Data: Initial color is red, but it changes to the predicted class's color (purple or orange) after the classification decision is made.</p></li>
+            <li><p><b>Buttons and Animation Controls</b></p></li>
+                <ul>
+                    <li><p><b>Play</b>: Start the Animation.</p></li>
+                    <li><p><b>Pause</b>: Stop the Animation.</p></li>
+                    <li><p><b>Step Forward/Backward</b>: Move frame by frame to analyse the decision-making process.</p></li>
+                    <li><p><b>Once</b>: The animation plays through a single time and stops.</p></li>
+                    <li><p><b>Loop</b>: The animation repeats continuously.</p></li>
+                    <li><p><b>Reflect</b>: The animation plays forward and then reverses back to the start.</p></li>
+                    <li><p><b>Speed Slider</b>: Adjusts the speed of the animation, allowing you to slow down or speed up the process.</p></li>
+                </ul>
+        </ul>
+    </div>
+</div>
+
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+    
+    <!-- JQuery and AJAX Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    
+        // Frame descriptions mapping
+        const frameDescriptions = {
+            frame1Btn: "Frame 1: Explains the initial setup and the dataset visualization.",
+            frame2Btn: "Frame 2: Highlights the k nearest points to the new data point.",
+            frame3Btn: "Frame 3: Displays the distances to the k nearest neighbors.",
+            frame4Btn: "Frame 4: Highlights the majority class among the k neighbors.",
+            frame5Btn: "Frame 5: Draws a circle around the majority class.",
+            frame6Btn: "Frame 6: Changes the test data point to the predicted class's color."
+        };
+    
+        // Function to show description and move to the next frame
+        function handleFrameAction(buttonId, frameNumber) {
+            // Update the frame description
+            const frameDescriptionDiv = document.getElementById('frameDescription');
+            frameDescriptionDiv.textContent = frameDescriptions[buttonId];
+    
+            // Trigger the animation frame logic
+            goToFrame(frameNumber);
+        }
+    
+        // Add event listeners to frame buttons
+        document.querySelectorAll('.frame-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const frameNumber = button.dataset.frame;
+                handleFrameAction(button.id, frameNumber);
+            });
+        });
+    
+        // Example of the `goToFrame` function
+        function goToFrame(frameNumber) {
+            // Hide all frames and show the target frame
+            const frames = document.querySelectorAll('.animation-frame');
+            frames.forEach(frame => frame.style.display = 'none');
+    
+            // Show the specific frame
+            const targetFrame = document.querySelector(`#frame${frameNumber}`);
+            if (targetFrame) {
+                targetFrame.style.display = 'block';
+            } else {
+                console.error(`Frame ${frameNumber} not found!`);
+            }
+        }
+    
+        // Handle form submission with Fetch API
+        document.getElementById('knnForm').onsubmit = async (e) => {
+            e.preventDefault();
+    
+            const formData = new FormData(e.target);
+            const response = await fetch("{{ url_for('knn.index') }}", {
+                method: "POST",
+                body: formData
+            });
+    
+            const data = await response.json();
+            const errorDiv = document.getElementById('errorMessage');
+            const animationContainer = document.getElementById('animationContainer');
+    
+            if (response.ok) {  // Use response.ok for success
+                errorDiv.style.display = 'none';
+                animationContainer.innerHTML = data.animation_html;
+            } else {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = data.error;  // Show the specific error message
+                animationContainer.innerHTML = '';  // Clear animation container
+            }
+        };
+    </script>
+</body>
+</html>
