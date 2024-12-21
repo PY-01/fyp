@@ -1,0 +1,55 @@
+from flask import Blueprint, render_template, request, jsonify
+from .knn_example import perform_knn_animation_html  # Import kNN function
+
+bp = Blueprint('knn_example', __name__, template_folder='../templates')
+
+@bp.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        try:
+            # Parse input data from the form
+            x_data = request.form.get('x_data')
+            y_data = request.form.get('y_data')
+            classes = request.form.get('classes')
+            new_x = request.form.get('new_x')
+            new_y = request.form.get('new_y')
+            k_values = request.form.get('k_values')
+
+            # Validate inputs: check that all fields are filled
+            if not all([x_data, y_data, classes, new_x, new_y, k_values]):
+                raise ValueError("All fields are required.")
+
+            # Convert input strings to lists and ensure proper formats
+            x = list(map(float, x_data.split(',')))
+            y = list(map(float, y_data.split(',')))
+            class_list = list(map(int, classes.split(',')))
+            k_list = [int(k.strip()) for k in k_values.split(',') if k.strip().isdigit()]
+
+            # Ensure the lengths of x, y, and classes match
+            if len(x) != len(y) or len(x) != len(class_list):
+                raise ValueError("The lengths of x_data, y_data, and classes must match.")
+
+            # Ensure k values are valid (positive integers)
+            if not k_list or any(k <= 0 for k in k_list):
+                raise ValueError("k_values must be a non-empty list of positive integers.")
+
+            # Convert new_x and new_y to floats
+            new_x = float(new_x)
+            new_y = float(new_y)
+
+            # Perform k-NN and generate animation HTML
+            animation_html = perform_knn_animation_html(x, y, class_list, new_x, new_y, k_list)
+
+            # Return the generated animation HTML as a JSON response
+            return jsonify({"animation_html": animation_html})
+
+        except ValueError as e:
+            # Return specific error message for invalid input
+            return jsonify({"error": str(e)}), 400
+        except Exception as e:
+            # Catch any other unexpected errors
+            return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+
+    # Handle GET request to display the form (this is the page the user sees initially)
+    return render_template('run_knn.html')
+
