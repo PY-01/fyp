@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k-NN Example</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    
+    <!-- Link to the styles.css file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        
+        <!-- Hamburger Icon for Small Screens -->
+        <div class="menu-toggle" id="mobile-menu">
+            &#9776;
+        </div>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content-container">
+        <h1><i>k</i>-NN Example</h1>
+
+        <div class="instructions-and-theory">
+            <!-- Basic Theory Section -->
+            <div class="knn-theory">
+                <p><strong>How <i>k</i>-NN Works</strong></p>
+                <ul>
+                    <li>It identifies the <i>k</i> nearest neighbours to a new data point.</li>
+                    <li>The majority class of these neighbours determines the classification.</li>
+                    <li>The distance metric determines how the closeness of points is measured, with Euclidean distance being the most common choice for its simplicity and geometric relevance.</li>
+                    <li>Picking the right k value is important because a small k can focus too much on noise, while a large k might miss important local details.</li>
+                </ul>
+            </div>
+            
+            <!-- Input Instructions -->
+            <div class="input-instructions">
+                <p><strong>Instructions</strong></p>
+                <p><b>Please enter your values in a comma-separated format.</b></p>
+                <p><b>Note:</b> Ensure there are no spaces between the values.</p>
+                <p><b>Tip:</b> You can also input multiple <i>k</i> values to perform comparisons. Enter 1-4 values, separated by commas.</p>
+            </div>
+        </div>
+
+        <!-- Single-line input form -->
+        <form id="knnForm" class="input-form single-line-form">
+            <label for="x_data">x:</label>
+            <input type="text" id="x_data" name="x_data" required 
+            value="4,5,10,4,3,11,14,8,10,12,10,9,12,11,10,7,7,7,13,6,12,5,9,5,14,9">
+
+            <label for="y_data">y:</label>
+            <input type="text" id="y_data" name="y_data" required 
+            value="21,19,24,17,16,25,24,22,21,21,18,18,16,17,20,17,24,20,19,22,22,24,23,23,17,19">
+
+            <label for="classes">Classes:</label>
+            <input type="text" id="classes" name="classes" required 
+            value="0,0,1,0,0,1,1,0,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,0,1,1">
+
+            <label for="new_x">New x:</label>
+            <input type="number" id="new_x" name="new_x" required step="1"  value="8.2">
+
+            <label for="new_y">New y:</label>
+            <input type="number" id="new_y" name="new_y" required step="1" value="20">
+
+            <label for="k_value">k (1-4):</label>
+            <input type="text" id="k_value" name="k_values" required pattern="^([1-9]\d*)(,([1-9]\d*)){0,3}$">
+
+            <button type="reset">Reset</button>
+            <button type="button" id="submitForm">Run</button>
+        </form>
+
+        <!-- Frame control buttons -->
+        <div class="frameControls">
+            <button type="button" id="frame1Btn">Explain 1st Frame</button>
+            <button type="button" id="frame2Btn">Show k Nearest Points</button>
+            <button type="button" id="frame3Btn">Show Distances</button>
+            <button type="button" id="frame4Btn">Highlight Majority Class</button>
+            <button type="button" id="frame5Btn">Circle Majority Class</button>
+            <button type="button" id="frame6Btn">Change Test Data Color</button>
+        </div>
+
+        <div id="frameDescription"></div>
+
+        <div class="result-container">
+            <h2>Result</h2>
+            <!-- Animation Container -->
+            <div class="animation-container" id="animationContainer">
+                <div id="frame1" class="animation-frame">Frame 1: Initial setup and dataset visualization.</div>
+                <div id="frame2" class="animation-frame">Frame 2: Highlights the k nearest points.</div>
+                <div id="frame3" class="animation-frame">Frame 3: Displays the distances to the nearest neighbors.</div>
+                <div id="frame4" class="animation-frame">Frame 4: Highlights the majority class among neighbors.</div>
+                <div id="frame5" class="animation-frame">Frame 5: Draws a circle around the majority class.</div>
+                <div id="frame6" class="animation-frame">Frame 6: Changes the test data to the predicted class's color.</div>
+            </div>
+        </div>
+        
+        <div class="interpretation">
+            <ul>
+                <li><p>Dotted lines: Connect the new point (red star) to all other points in the dataset, representing the distances between them.</p></li>
+                <li><p>Thicker lines: Highlights the <i>k</i> nearest distance.</p></li>
+                <li><p>Distinct Class: Class 0 represented by purple diamond-shaped points and Class 1 by orange triangular points.</p></li>
+                <li><p>Test Data: Initial color is red, but it changes to the predicted class's color (purple or orange) after the classification decision is made.</p></li>
+                <li><p><b>Buttons and Animation Controls</b></p>
+                    <ul>
+                        <li><p><b>Play</b>: Start the Animation.</p></li>
+                        <li><p><b>Pause</b>: Stop the Animation.</p></li>
+                        <li><p><b>Step Forward/Backward</b>: Move frame by frame to analyse the decision-making process.</p></li>
+                        <li><p><b>Once</b>: The animation plays through a single time and stops.</p></li>
+                        <li><p><b>Loop</b>: The animation repeats continuously.</p></li>
+                        <li><p><b>Reflect</b>: The animation plays forward and then reverses back to the start.</p></li>
+                        <li><p><b>Speed Slider</b>: Adjusts the speed of the animation, allowing you to slow down or speed up the process.</p></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+
+    <!-- JQuery and AJAX Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        // Handle form submission with AJAX
+        $('#submitForm').on('click', function () {
+            const formData = $('#knnForm').serialize();
+            $.ajax({
+                url: "{{ url_for('knn_example.index') }}",
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.animation_html) {
+                        $('#animationContainer').html(response.animation_html);
+                    } else if (response.error) {
+                        alert(response.error);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while processing the request.');
+                }
+            });
+        });
+
+        document.getElementById('knnForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const response = await fetch("/", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            const errorDiv = document.getElementById('errorMessage');
+            const animationContainer = document.getElementById('animationContainer');
+
+            if (response.status === 200) {
+                errorDiv.style.display = 'none';
+                animationContainer.innerHTML = data.animation_html;
+            } else {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = data.error;  // Show the specific error message
+                animationContainer.innerHTML = '';  // Clear animation container
+            }
+        };
+
+        // Add event listeners to buttons
+        document.getElementById('frame1Btn').addEventListener('click', () => handleFrameAction(1));
+        document.getElementById('frame2Btn').addEventListener('click', () => handleFrameAction(2));
+        document.getElementById('frame3Btn').addEventListener('click', () => handleFrameAction(3));
+        document.getElementById('frame4Btn').addEventListener('click', () => handleFrameAction(4));
+        document.getElementById('frame5Btn').addEventListener('click', () => handleFrameAction(5));
+        document.getElementById('frame6Btn').addEventListener('click', () => handleFrameAction(6));
+        
+        // Function to handle button clicks and activate frames
+        function handleFrameAction(frameNumber) {
+            const frameDescriptionDiv = document.getElementById('frameDescription');
+            
+            // Update frame description based on frame number
+            const descriptions = {
+                1: "Frame 1: Explains the initial setup and the dataset visualization.",
+                2: "Frame 2: Highlights the k nearest points to the new data point.",
+                3: "Frame 3: Displays the distances to the k nearest neighbors.",
+                4: "Frame 4: Highlights the majority class among the k neighbors.",
+                5: "Frame 5: Draws a circle around the majority class.",
+                6: "Frame 6: Changes the test data point to the predicted class's color."
+            };
+            frameDescriptionDiv.textContent = descriptions[frameNumber] || "No description available for this frame.";
+        
+            // Hide all frames
+            const frames = document.querySelectorAll('.animation-frame');
+            frames.forEach(frame => frame.classList.remove('active'));
+        
+            // Show the target frame
+            const targetFrame = document.getElementById(`frame${frameNumber}`);
+            if (targetFrame) {
+                targetFrame.classList.add('active');
+            } else {
+                console.error(`Frame ${frameNumber} not found!`);
+            }
+        }
+    </script>
+</body>
+</html>
