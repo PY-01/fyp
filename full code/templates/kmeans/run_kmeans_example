@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k-Means Results</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+    <!-- Link to the styles.css file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='algo_styles.css') }}">
+    
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Machine Learning Made Visual (MLMV)</div>
+        <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Algorithms</a>
+                <div class="dropdown-content">
+                    <a href="/knn">k-NN</a>
+                    <a href="/kmeans">k-Means</a>
+                </div>
+            </li>
+            <li><a href="/explore">Pre-Built Examples</a></li>
+            <li><a href="/theory">Theory</a></li>
+            <li><a href="/guides">Guides</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="content-container">
+        <h1><i>k</i>-Means Clustering Animation</h1>
+
+        <form id="kmeansForm" class="input-form single-line-form">
+            <label for="x_data">x:</label>
+            <input type="text" id="x_data" name="x_data" required value="9,10,12,5,6,10,15,20,14,22,21,18,8,11,13,7,15,12,5,22,30,27,21,26,25,28,16,6,11,20,19,15,20,31,30,26,27">
+
+            <label for="y_data">y:</label>
+            <input type="text" id="y_data" name="y_data" required value="11,12,15,16,12,20,25,30,22,28,31,20,30,40,35,38,32,30,41,35,46,33,42,43,15,27,38,23,27,14,18,40,25,36,20,20,23">
+
+            <label for="k_value"><i>k</i>:</label>
+            <input type="number" id="k_value" name="k_value" min="1" required value="5">
+
+            <label for="cx">Initial Centroids X:</label>
+            <input type="text" id="cx" name="cx" required value="2, 18, 10, 17, 30">
+
+            <label for="cy">Initial Centroids Y:</label>
+            <input type="text" id="cy" name="cy" required value="10, 26, 25, 34, 41">
+
+            <label>Compare Different Initial Centroids:</label>
+            <div>
+                <input type="radio" id="compare_yes" name="compare_centroids" value="yes">
+                <label for="compare_yes">Yes</label>
+                <input type="radio" id="compare_no" name="compare_centroids" value="no" checked>
+                <label for="compare_no">No</label>
+            </div>
+
+            <!-- Additional Input for Comparison -->
+            <div id="additionalCentroids" class="hidden">
+                <label for="cx2">Additional Initial Centroids X:</label>
+                <input type="text" id="cx2" name="cx2" value="1, 15, 12, 19, 31">
+
+                <label for="cy2">Additional Initial Centroids Y:</label>
+                <input type="text" id="cy2" name="cy2" value="11, 24, 26, 32, 42">
+            </div>
+
+            <button type="reset">Reset</button>
+            <button type="button" id="submitForm">Run</button>
+        </form>
+
+        <div class="result-container">
+            <h2>Result</h2>
+            <div id="resultMessage"></div>
+            <div class="animation-container" id="animationContainer"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Loo Pei Yin. All rights reserved.</p>
+    </footer>
+
+    <!-- JQuery and AJAX Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Show or hide the additional centroid input fields
+        const compareYes = document.getElementById("compare_yes");
+        const compareNo = document.getElementById("compare_no");
+        const additionalCentroids = document.getElementById("additionalCentroids");
+
+        compareYes.addEventListener("change", () => {
+            if (compareYes.checked) {
+                additionalCentroids.classList.remove("hidden");
+            }
+        });
+
+        compareNo.addEventListener("change", () => {
+            if (compareNo.checked) {
+                additionalCentroids.classList.add("hidden");
+            }
+        });
+
+        // Hamburger menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        // Handle form submission with AJAX
+        $('#submitForm').on('click', function () {
+            const formData = $('#kmeansForm').serialize();
+            $.ajax({
+                url: "{{ url_for('kmeans.index') }}",
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.animation_html) {
+                        $('#animationContainer').html(response.animation_html);
+                    } else if (response.error) {
+                        alert(response.error); 
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while processing the request.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
