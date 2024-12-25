@@ -44,6 +44,25 @@
 
     <div class="content-container">
         <h1><i>k</i>-Means Clustering Animation</h1>
+        
+        <div class="instructions-and-theory">
+            <!-- Basic Theory Section -->
+            <div class="knn-theory">
+                <p><strong>How <i>k</i>-Means Works</strong></p>
+                <ul>
+                    <li>Partition the data into <i>k</i> clusters based on similarity.</li>
+                    <li>Assign each data point to the nearest cluster centroid.</li>
+                    <li>Iteratively update the centroids based on the mean of points in each cluster.</li>
+                    <li>Stop when centroids stabilise or a maximum number of iterations is reached.</li>
+                </ul>
+            </div>
+            <!-- Input Instructions -->
+            <div class="input-instructions">
+                <p><strong>Instructions</strong></p>
+                <p><b>Please enter your values in a comma-separated format.</b></p>
+                <p><b>Note:</b> Ensure there are no spaces between the values.</p>
+            </div>
+        </div>
 
         <form id="cluster-form" class="input-form single-line-form">
             <label for="x_data">x:</label>
@@ -87,6 +106,25 @@
             <h2>Result</h2>
             <div id="resultMessage"></div>
             <div class="animation-container" id="animationContainer"></div>
+        </div>
+        
+        <div class="interpretation">
+            <ul>
+                <li><p><strong>Centroids:</strong> The <i>k</i> centroids (marked as red stars) represent the center of each cluster. These are updated during each iteration of the algorithm based on the average of the points within each cluster.</p></li>
+                <li><p><strong>Cluster Assignment:</strong> Each data point is assigned to the nearest centroid based on distance. This creates distinct groups, which are colored differently.</p></li>
+                <li><p><strong>Iteration Process:</strong> The algorithm iteratively moves the centroids based on the mean position of the points assigned to them. This continues until the centroids stabilise.</p></li>
+                <li><p><strong>Convergence:</strong> The animation shows how the centroids evolve with each iteration. Once the centroids stop moving, the algorithm has converged, and the clusters are finalised.</p></li>
+                <li><p><b>Buttons and Animation Controls</b></p></li>
+                    <ul>
+                        <li><p><b>Play</b>: Start the Animation.</p></li>
+                        <li><p><b>Pause</b>: Stop the Animation.</p></li>
+                        <li><p><b>Step Forward/Backward</b>: Move frame by frame to analyse the decision-making process.</p></li>
+                        <li><p><b>Once</b>: The animation plays through a single time and stops.</p></li>
+                        <li><p><b>Loop</b>: The animation repeats continuously.</p></li>
+                        <li><p><b>Reflect</b>: The animation plays forward and then reverses back to the start.</p></li>
+                        <li><p><b>Speed Slider</b>: Adjusts the speed of the animation, allowing you to slow down or speed up the process.</p></li>
+                    </ul>
+            </ul>
         </div>
     </div>
 
