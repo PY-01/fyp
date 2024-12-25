@@ -45,7 +45,7 @@
     <div class="content-container">
         <h1><i>k</i>-Means Clustering Animation</h1>
 
-        <form id="kmeansForm" class="input-form single-line-form">
+        <form id="cluster-form" class="input-form single-line-form">
             <label for="x_data">x:</label>
             <input type="text" id="x_data" name="x_data" required value="9,10,12,5,6,10,15,20,14,22,21,18,8,11,13,7,15,12,5,22,30,27,21,26,25,28,16,6,11,20,19,15,20,31,30,26,27">
 
@@ -60,7 +60,7 @@
 
             <label for="cy">Initial Centroids Y:</label>
             <input type="text" id="cy" name="cy" required value="10, 26, 25, 34, 41">
-
+            
             <label>Compare Different Initial Centroids:</label>
             <div>
                 <input type="radio" id="compare_yes" name="compare_centroids" value="yes">
@@ -79,7 +79,8 @@
             </div>
 
             <button type="reset">Reset</button>
-            <button type="button" id="submitForm">Run</button>
+            <button type="button" id="assignClusters" data-action="assign">Assign Clusters</button>
+            <button type="button" id="runIteration" data-action="iterate">Run Iteration</button>
         </form>
 
         <div class="result-container">
@@ -96,7 +97,7 @@
     <!-- JQuery and AJAX Script -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Show or hide the additional centroid input fields
+     // Show or hide the additional centroid input fields
         const compareYes = document.getElementById("compare_yes");
         const compareNo = document.getElementById("compare_no");
         const additionalCentroids = document.getElementById("additionalCentroids");
@@ -112,26 +113,22 @@
                 additionalCentroids.classList.add("hidden");
             }
         });
+        
+        // Handle form submission dynamically based on the clicked button
+        $('button[data-action]').on('click', function () {
+            const action = $(this).data('action'); // Get the action from the button
+            const formData = $('#cluster-form').serialize() + `&action=${action}`; // Append action to form data
 
-        // Hamburger menu toggle
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('nav-links');
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('show');
-        });
-
-        // Handle form submission with AJAX
-        $('#submitForm').on('click', function () {
-            const formData = $('#kmeansForm').serialize();
             $.ajax({
                 url: "{{ url_for('kmeans.index') }}",
                 type: "POST",
                 data: formData,
                 success: function (response) {
-                    if (response.animation_html) {
-                        $('#animationContainer').html(response.animation_html);
+                    if (response.html) {
+                        $('#animationContainer').html(response.html); // Load the animation
+                        $('#resultMessage').html(`Action "${action}" completed successfully!`);
                     } else if (response.error) {
-                        alert(response.error); 
+                        alert(response.error);
                     }
                 },
                 error: function () {
